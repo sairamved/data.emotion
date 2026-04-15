@@ -1,0 +1,338 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "et-book";
+  src: url("/fonts/et-book/et-book-roman-line-figures.woff") format("woff"),
+    url("/fonts/et-book/et-book-roman-line-figures.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "et-book";
+  src: url("/fonts/et-book/et-book-display-italic-old-style-figures.woff")
+      format("woff"),
+    url("/fonts/et-book/et-book-display-italic-old-style-figures.ttf")
+      format("truetype");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "et-book";
+  src: url("/fonts/et-book/et-book-bold-line-figures.woff") format("woff"),
+    url("/fonts/et-book/et-book-bold-line-figures.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #111111;
+  --text: #fffff8;
+  --text-muted: rgba(255, 255, 248, 0.4);
+  --text-dim: rgba(255, 255, 248, 0.15);
+  --border: rgba(255, 255, 248, 0.08);
+  --font-manrope: "Manrope", sans-serif;
+  --font-etbook: "et-book", serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-etbook);
+  font-optical-sizing: auto;
+}
+
+::selection {
+  background: rgba(255, 255, 248, 0.15);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Tufte-inspired article styles */
+article {
+  width: 87.5%;
+  max-width: 1400px;
+  padding-left: 12.5%;
+  counter-reset: sidenote-counter;
+}
+
+article section {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+article section > p,
+article section > footer,
+article section > table {
+  width: 55%;
+}
+
+article section > ol,
+article section > ul {
+  width: 50%;
+  padding-left: 5%;
+}
+
+article h1 {
+  font-family: var(--font-etbook);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 3.2rem;
+  line-height: 1.1;
+  margin-top: 6rem;
+  margin-bottom: 1.5rem;
+}
+
+article h2 {
+  font-family: var(--font-manrope);
+  font-weight: 700;
+  font-size: 2.2rem;
+  line-height: 1;
+  margin-top: 3rem;
+  margin-bottom: 0.5rem;
+  font-style: normal;
+}
+
+article h3 {
+  font-family: var(--font-etbook);
+  font-weight: 400;
+  font-size: 1.7rem;
+  font-style: italic;
+  margin-top: 2.5rem;
+  margin-bottom: 0.3rem;
+  line-height: 1;
+}
+
+article p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-top: 1.4rem;
+  margin-bottom: 1.4rem;
+}
+
+article p strong {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+article p.subtitle {
+  font-family: var(--font-manrope);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.1rem;
+  display: block;
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+
+article blockquote {
+  font-size: 1.1rem;
+  width: 55%;
+  margin-left: 0;
+  padding-left: 1.4rem;
+  border-left: 2px solid rgba(255, 255, 248, 0.1);
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+article blockquote p {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Sidenotes */
+.sidenote,
+.marginnote {
+  float: right;
+  clear: right;
+  margin-right: -60%;
+  width: 50%;
+  margin-top: 0.3rem;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  vertical-align: baseline;
+  position: relative;
+}
+
+.sidenote-number {
+  counter-increment: sidenote-counter;
+}
+
+.sidenote-number:after,
+.sidenote:before {
+  font-size: 0.8rem;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.sidenote-number:after {
+  content: counter(sidenote-counter);
+  top: -0.5rem;
+  left: 0.1rem;
+  color: var(--text-muted);
+}
+
+.sidenote:before {
+  content: counter(sidenote-counter) " ";
+  top: -0.5rem;
+  color: var(--text-muted);
+}
+
+input.margin-toggle {
+  display: none;
+}
+
+label.margin-toggle:not(.sidenote-number) {
+  display: none;
+}
+
+.newthought {
+  font-variant: small-caps;
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+}
+
+.fullwidth {
+  max-width: 90%;
+  clear: both;
+}
+
+/* Epigraph */
+.epigraph {
+  margin: 3em 0;
+}
+
+.epigraph blockquote {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.epigraph blockquote footer {
+  font-style: normal;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* About link */
+.about-link {
+  font-family: "Manrope", sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: #fffff8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.about-link:hover {
+  color: rgba(255, 255, 248, 0.9);
+}
+
+/* Back link */
+.back-link {
+  font-family: "Manrope", sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 248, 0.4);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: rgba(255, 255, 248, 0.8) !important;
+}
+
+/* Sidebar links */
+.sidebar-link:hover {
+  color: rgba(255, 255, 248, 0.8) !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.content-main {
+  margin-left: 220px;
+}
+
+/* Responsive */
+@media (max-width: 760px) {
+  article {
+    width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  article section > p,
+  article section > footer,
+  article section > table,
+  article section > ol,
+  article section > ul {
+    width: 100%;
+  }
+
+  article blockquote {
+    width: 100%;
+  }
+
+  article h1 {
+    font-size: 2.4rem;
+    margin-top: 6rem;
+  }
+
+  .sidenote,
+  .marginnote {
+    display: none;
+  }
+
+  .margin-toggle:checked + .sidenote,
+  .margin-toggle:checked + .marginnote {
+    display: block;
+    float: left;
+    left: 1rem;
+    clear: both;
+    width: 95%;
+    margin: 1rem 2.5%;
+    position: relative;
+  }
+
+  label.margin-toggle:not(.sidenote-number) {
+    display: inline;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+
+  .content-sidebar {
+    display: none !important;
+  }
+
+  .content-main {
+    margin-left: 0;
+  }
+}

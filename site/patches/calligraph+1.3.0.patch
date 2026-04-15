@@ -1,0 +1,15 @@
+diff --git a/node_modules/calligraph/dist/index.js b/node_modules/calligraph/dist/index.js
+index 9072888..8f940c7 100644
+--- a/node_modules/calligraph/dist/index.js
++++ b/node_modules/calligraph/dist/index.js
+@@ -457,8 +457,8 @@ function TextRenderer({ text, Component, transition, driftX, driftY, animateInit
+                 children: text.split("").map((char, i)=>{
+                     const key = charKeys[i];
+                     const progress = text.length <= 1 ? 0 : i / (text.length - 1);
+-                    const offsetX = (progress - 0.5) * driftX * changeRatio;
+-                    const offsetY = (progress - 0.5) * driftY * changeRatio;
++                    const offsetX = -1 * driftX * changeRatio;
++                    const offsetY = -1 * driftY * changeRatio;
+                     const isLast = i === text.length - 1;
+                     return /*#__PURE__*/ jsx(motion.span, {
+                         "aria-hidden": "true",
