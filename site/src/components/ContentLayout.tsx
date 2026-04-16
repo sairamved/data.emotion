@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Logo } from "./Logo";
+import { playTap } from "@/lib/sounds";
 
 interface Heading {
   id: string;
@@ -99,12 +100,13 @@ export function ContentLayout({
           gap: "0.15rem",
         }}
       >
-        <Link href="/" style={{ textDecoration: "none", marginBottom: "1.5rem" }}>
+        <Link href="/" style={{ textDecoration: "none", marginBottom: "1.5rem" }} onClick={() => playTap()}>
           <Logo />
         </Link>
         <Link
           href={backHref}
           className="back-link"
+          onClick={() => playTap()}
           style={{
             display: "block",
             fontFamily: '"Manrope", sans-serif',
@@ -124,6 +126,7 @@ export function ContentLayout({
             key={heading.id}
             href={`#${heading.id}`}
             className="sidebar-link"
+            onClick={() => playTap()}
             data-active={activeId === heading.id ? "true" : undefined}
             style={{
               display: "block",

@@ -3,14 +3,20 @@
 import { useState } from "react";
 import { Calligraph } from "calligraph";
 
-export function Logo() {
-  const [expanded, setExpanded] = useState(false);
+interface LogoProps {
+  /** When true, always shows "Data + Emotion" (hover still works on top). */
+  alwaysExpanded?: boolean;
+}
+
+export function Logo({ alwaysExpanded }: LogoProps = {}) {
+  const [hovered, setHovered] = useState(false);
+  const expanded = alwaysExpanded || hovered;
 
   return (
     <div
       className="logo-container"
-      onMouseEnter={() => setExpanded(true)}
-      onMouseLeave={() => setExpanded(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
         cursor: "pointer",
         display: "inline-flex",
