@@ -33,8 +33,6 @@ jobs:
 
       - name: Build
         working-directory: site
-        env:
-          NEXT_PUBLIC_BASE_PATH: /data.emotion
         run: npm run build
 
       - name: Upload artifact
