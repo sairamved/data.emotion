@@ -1,0 +1,696 @@
+1
+00:00:00,393 --> 00:00:01,164
+hi Christian.
+
+2
+00:00:01,164 --> 00:00:10,947
+Yeah, I just wanted to start by asking you about what you generally do because...
+
+3
+00:00:10,947 --> 00:00:17,584
+I know you do a lot of biology related data visualizations and uh creating tools and
+whatnot.
+
+4
+00:00:17,584 --> 00:00:19,286
+So would love to hear from you.
+
+5
+00:00:19,286 --> 00:00:24,041
+What is it that you're kind of mostly doing these days?
+
+6
+00:00:24,041 --> 00:00:26,786
+Um yeah, so I uh
+
+7
+00:00:26,786 --> 00:00:33,910
+Actually just came back from a uh conference I helped organize in Cambridge, UK.
+
+8
+00:00:34,392 --> 00:00:37,525
+that was about visualizing biological data.
+
+9
+00:00:37,525 --> 00:00:46,662
+the conference is called VizBI and I've been attending that almost yearly since twenty
+eleven.
+
+10
+00:00:46,823 --> 00:00:50,949
+the series was started in twenty ten, so yeah.
+
+11
+00:00:50,949 --> 00:00:54,772
+This year I think was the sixteenth meeting.
+
+12
+00:00:54,772 --> 00:01:01,967
+Yeah, I've also been a speaker in the master class that's part of the conference.
+
+13
+00:01:02,509 --> 00:01:13,639
+this year we were talking about how how to use AI in data visualization and how useful is
+it at this point.
+
+14
+00:01:13,639 --> 00:01:20,185
+what are the best techniques or you know tricks how to get the most out of
+
+15
+00:01:20,887 --> 00:01:24,923
+various AI programs when it comes to data visualization.
+
+16
+00:01:24,923 --> 00:01:37,981
+And so, you know, the bottom line was it's that part is still very much a work in progress
+and they haven't figured out a great way to do that yet.
+
+17
+00:01:38,464 --> 00:01:39,836
+I see, okay.
+
+18
+00:01:39,836 --> 00:01:52,309
+But it's interesting, like you have a bunch of different projects, at least on your
+website, and one of them is the evolving portraits thing, which I specifically wanted to
+
+19
+00:01:52,309 --> 00:01:53,510
+touch on.
+
+20
+00:01:54,712 --> 00:01:56,819
+Yeah, the DNA portraits one.
+
+21
+00:01:56,819 --> 00:02:06,771
+Yeah, if you could maybe just tell me about how did that come about and why you chose to
+show people's DNA in that way.
+
+22
+00:02:06,771 --> 00:02:19,308
+Yeah, so that project started a few years back when I first used twenty three and me to
+get my own DNA looked at and analyzed and
+
+23
+00:02:19,308 --> 00:02:34,673
+as part of what twenty three and me offers is uh you can also download your own data and
+you know it of course shows you that the picture they give you is very limited.
+
+24
+00:02:34,673 --> 00:02:44,376
+You know, they just sequence a small portion of your DNA there's around, I don't know, a
+million or so
+
+25
+00:02:44,535 --> 00:02:49,340
+data points that they basically cherry picked out of your whole genome.
+
+26
+00:02:49,340 --> 00:02:50,173
+and
+
+27
+00:02:50,173 --> 00:02:50,904
+Yeah.
+
+28
+00:02:50,904 --> 00:03:06,105
+So besides all the sort of ancestry analysis and things like that that you get through
+twenty-threeandme, I was wondering, could I create some kind of a image that shows you a
+
+29
+00:03:06,105 --> 00:03:10,118
+snapshot of of who you are genetically?
+
+30
+00:03:10,118 --> 00:03:17,122
+And could I make that happen in a way that creates a different image for each person?
+
+31
+00:03:17,443 --> 00:03:18,263
+But
+
+32
+00:03:18,317 --> 00:03:32,158
+Not sort of in a random fashion, but in a way that's deterministic, so that if you run the
+same person's DNA data again, you get the same image, right?
+
+33
+00:03:32,158 --> 00:03:34,080
+Um
+
+34
+00:03:34,080 --> 00:03:42,865
+And so in that sense I was curious to see, you know, like how different do different
+people's genomes look?
+
+35
+00:03:42,865 --> 00:03:49,022
+You know, can you really see a difference between you and me or somebody else?
+
+36
+00:03:49,022 --> 00:04:01,523
+like I needed to find some way to summarize a million data points into a graphic that
+showed you visible differences between
+
+37
+00:04:01,779 --> 00:04:12,112
+the individual uh chromosomes maybe and also you know between different individuals, the
+data from different people.
+
+38
+00:04:12,112 --> 00:04:13,168
+And so
+
+39
+00:04:13,168 --> 00:04:24,101
+Since the data since DNA is organized in chromosomes, I thought, okay, a good starting
+point would be if I have one graphic for each chromosome.
+
+40
+00:04:24,101 --> 00:04:24,773
+Okay.
+
+41
+00:04:24,773 --> 00:04:36,001
+And so I decided I was just gonna take account of all the different nucleotide
+combinations that you see.
+
+42
+00:04:36,042 --> 00:04:42,450
+and that's sort of a simple combinatorics math, you know.
+
+43
+00:04:42,450 --> 00:04:49,656
+DNA only ha consists of four letters and then we have two positions
+
+44
+00:04:50,172 --> 00:04:56,041
+Or two letters for each position in the genome that twenty three in me reads.
+
+45
+00:04:56,041 --> 00:04:56,539
+Mm-hmm.
+
+46
+00:04:56,539 --> 00:04:59,871
+One basically coming from your mom, one from your dad, right?
+
+47
+00:04:59,871 --> 00:05:04,207
+So that's that's your genetic inheritance.
+
+48
+00:05:04,207 --> 00:05:13,641
+And so for each position you either get two matching letters or they could be different
+letters, you know.
+
+49
+00:05:14,343 --> 00:05:23,270
+or sometimes what happens too is you can get no read, you know, that that happens
+sometimes, you know, because the process isn't perfect.
+
+50
+00:05:23,270 --> 00:05:31,670
+Um but anyway, yeah, and then I decided, okay, to
+
+51
+00:05:31,670 --> 00:05:39,995
+show the different letters, I'm going to encode the combinations in different colors.
+
+52
+00:05:40,075 --> 00:05:55,170
+And I basically assigned the the four printing colors that are used in printing
+technology, so cyan, magenta, yellow and black, to the four letters of the DNA alphabet.
+
+53
+00:05:55,170 --> 00:05:55,508
+Mm-hmm.
+
+54
+00:05:55,508 --> 00:05:58,009
+have G, C, A, and T.
+
+55
+00:05:59,090 --> 00:06:02,934
+Those are the four bases that all of the DNA is constructed from.
+
+56
+00:06:02,934 --> 00:06:11,320
+And so when you get two A's, for example, that means it'll be pure cyan.
+
+57
+00:06:11,320 --> 00:06:14,421
+Okay, if cyan is A, right?
+
+58
+00:06:14,602 --> 00:06:21,167
+If you get an A and a G, then maybe that would be cyan in yellow, so that that would
+
+59
+00:06:21,167 --> 00:06:24,305
+combined to form a red U, right?
+
+60
+00:06:24,459 --> 00:06:26,562
+Anyway, you can you get the idea.
+
+61
+00:06:26,562 --> 00:06:32,351
+This way you can mix sort of eight different colors very easily, right?
+
+62
+00:06:32,351 --> 00:06:38,295
+So I I basically then created
+
+63
+00:06:39,117 --> 00:06:48,361
+A page that I call the generator where where you can take your data and then display it a
+few different ways.
+
+64
+00:06:48,361 --> 00:06:51,232
+So you can experiment with different shapes.
+
+65
+00:06:51,232 --> 00:06:55,864
+We have ellipses, we have rectangles, we have squares.
+
+66
+00:06:56,486 --> 00:07:00,504
+It was kind of fun playing around with it and um
+
+67
+00:07:00,504 --> 00:07:05,016
+mean, like the DNA is inherently like a human thing, right?
+
+68
+00:07:05,016 --> 00:07:07,100
+We're made up of the DNA.
+
+69
+00:07:07,442 --> 00:07:08,664
+So it's...
+
+70
+00:07:09,136 --> 00:07:25,201
+when when you render those ellipses as outlines, then they kind of resemble the the
+graphics that you see for for planetary systems, you know, where everything sort of is
+
+71
+00:07:25,201 --> 00:07:35,843
+aligned on one center, but then it it has these different paths and so that actually
+looked fairly poetic and
+
+72
+00:07:35,843 --> 00:07:47,611
+And they almost seem like galaxies or some I mean, I know technically galaxy is something
+very, very different, but they seemed like little planetary systems.
+
+73
+00:07:48,188 --> 00:07:49,170
+Yeah, it's beautiful.
+
+74
+00:07:49,170 --> 00:07:53,347
+like you have kind of the universe inside of you in a way.
+
+75
+00:07:53,347 --> 00:07:54,780
+Yeah, so
+
+76
+00:07:54,780 --> 00:07:55,540
+I don't know.
+
+77
+00:07:55,540 --> 00:07:57,681
+The reactions I got were sort of mixed.
+
+78
+00:07:57,681 --> 00:08:00,692
+Some people just didn't get it.
+
+79
+00:08:00,692 --> 00:08:14,288
+They they didn't because there's nothing but geometry going on, it was maybe a little bit
+too abstract for for people to emotionally react to it strongly.
+
+80
+00:08:15,029 --> 00:08:15,949
+But
+
+81
+00:08:15,989 --> 00:08:30,277
+At the same time I did also get some reaction from people who thought about it a little
+bit more, maybe, and they they found it very pleasing and and appealing and and actually
+
+82
+00:08:30,277 --> 00:08:41,952
+so because of that um a set of of these graphics also ended up on a on a C D disc that
+
+83
+00:08:41,952 --> 00:08:44,368
+Ended up being deposited on the moon.
+
+84
+00:08:45,088 --> 00:08:48,177
+yes, right, I remember you talking about this before.
+
+85
+00:08:48,177 --> 00:08:49,080
+Yeah.
+
+86
+00:08:49,080 --> 00:08:53,211
+of mine was involved in that project, sort of as a
+
+87
+00:08:53,263 --> 00:08:54,143
+What was he?
+
+88
+00:08:54,143 --> 00:08:56,365
+Kind of like an art director.
+
+89
+00:08:57,447 --> 00:09:03,068
+And so they burned all these images onto
+
+90
+00:09:03,068 --> 00:09:18,510
+the surface of of small sort of C D ROM-sized golden disks that were sent to to the moon
+and sort of sit there like a time capsule, you know, waiting for somebody to discover it
+
+91
+00:09:18,710 --> 00:09:19,771
+and decode it.
+
+92
+00:09:19,771 --> 00:09:27,877
+And so we had a whole genome sequence embedded in there.
+
+93
+00:09:27,877 --> 00:09:29,578
+But then also
+
+94
+00:09:29,816 --> 00:09:44,337
+my representation of that same genome as um yeah encoded in these outlines and it was just
+a black and white image but it still looked very interesting.
+
+95
+00:09:44,337 --> 00:09:46,634
+So
+
+96
+00:09:46,634 --> 00:09:54,049
+incredible to even think about that this piece of data visualization that you made is on
+the moon.
+
+97
+00:09:54,049 --> 00:09:59,295
+But also talking about the moon, that reminds me of the paper that you sent me earlier.
+
+98
+00:09:59,295 --> 00:10:00,995
+Well, not the article, mean.
+
+99
+00:10:00,995 --> 00:10:06,762
+oh Yesterday, I think it's Why Science Needs Art, right?
+
+100
+00:10:06,762 --> 00:10:08,544
+that you contributed to that.
+
+101
+00:10:08,544 --> 00:10:20,631
+one of the first few sentences, I think they mention about a film, A Trip to the Moon,
+1902, that the film is sort of, like even before any of the space exploration was done,
+
+102
+00:10:20,631 --> 00:10:21,832
+it's a piece of art.
+
+103
+00:10:21,832 --> 00:10:28,514
+But then later, in 1969, you have Neil Armstrong and all these other astronauts actually
+setting foot on the moon.
+
+104
+00:10:29,106 --> 00:10:35,553
+Yeah, and you can argue that art really helped inspire that space program, you know.
+
+105
+00:10:36,115 --> 00:10:45,835
+It I don't know if it would have happened without artists first sort of imagining that
+that trip to the moon.
+
+106
+00:10:45,941 --> 00:10:46,735
+day.
+
+107
+00:10:47,544 --> 00:10:57,519
+And yeah, so in that way art is a great way to to just try things out with very little
+risk.
+
+108
+00:10:57,519 --> 00:11:14,701
+You know, you can you can imagine anything and if you can make it visible to people, then
+that can do all kinds of things, even get them to build a real rocket that
+
+109
+00:11:14,701 --> 00:11:19,339
+That takes you to the moon and do all those things.
+
+110
+00:11:19,589 --> 00:11:28,513
+Right, yeah, which is, guess, one of the other questions I had was, like, these two seem
+to be on the opposite sides of the spectrum, right?
+
+111
+00:11:28,513 --> 00:11:29,545
+Art and
+
+112
+00:11:29,545 --> 00:11:41,181
+science and even if we take parallels and talk about even data and emotion, Data feels
+like this rigid thing and emotion is like this abstract, ever flowing feeling.
+
+113
+00:11:41,181 --> 00:11:41,672
+But.
+
+114
+00:11:41,672 --> 00:11:45,965
+For example, in your project, you were saying there were some people who didn't get it,
+right?
+
+115
+00:11:45,965 --> 00:11:55,498
+Because you don't have a rigorous connection between what the data is and what the visual
+is telling you what it is, right?
+
+116
+00:11:55,498 --> 00:12:00,381
+It's not your usual bar chart or whatnot, right?
+
+117
+00:12:00,381 --> 00:12:02,582
+So how do you think that...
+
+118
+00:12:03,304 --> 00:12:06,658
+influences how people perceive the visual.
+
+119
+00:12:06,679 --> 00:12:19,050
+do you think that having a more rigorous visualization always is like a good thing or what
+are the reasons that you choose to stay away from that and do a more artistic
+
+120
+00:12:19,050 --> 00:12:19,972
+representation?
+
+121
+00:12:19,972 --> 00:12:20,318
+Mm.
+
+122
+00:12:20,318 --> 00:12:34,397
+I mean when you when you work with an artistic representation that sort of gives you
+access to that world of emotion in a way, you know.
+
+123
+00:12:34,397 --> 00:12:34,888
+you
+
+124
+00:12:34,888 --> 00:12:48,086
+you leave the the sort of logical thinking and all the, you know, dry reasoning that goes
+into science behind and you enter a world that is more based on reactions, you know.
+
+125
+00:12:48,086 --> 00:13:02,084
+'Cause I mean that's one of the roles that emotions play in in our lives all the time, is
+that they give us a way to make very, very quick decisions, you know.
+
+126
+00:13:02,310 --> 00:13:15,213
+um people call it instinctively or you know gut reaction, you know, because it just it's
+so fast, it it just happens without you thinking about anything.
+
+127
+00:13:15,213 --> 00:13:15,685
+And
+
+128
+00:13:15,685 --> 00:13:21,487
+That's sort of the big difference between science and art, right?
+
+129
+00:13:21,488 --> 00:13:35,133
+Science requires you to really consider things thoroughly and you know, you there's a lot
+to understand and digest before you can make any conclusions.
+
+130
+00:13:35,594 --> 00:13:41,907
+And often that's what people find so frustrating is that desi uh that scientists never
+
+131
+00:13:41,907 --> 00:13:50,369
+really want to commit to anything, there's always qualifiers and you know, oh, but only if
+all these conditions apply, then this really holds true.
+
+132
+00:13:50,369 --> 00:13:57,522
+And whereas with feelings it's much more clear cut.
+
+133
+00:13:57,522 --> 00:14:08,592
+You know, you you either are in love with something or you hate it, you know, or you're
+shocked or you're pleased, you know, or
+
+134
+00:14:08,592 --> 00:14:15,608
+These things happen very quickly and they're very clear, you know, and relatable.
+
+135
+00:14:15,608 --> 00:14:30,583
+And so I think by choosing a more artistic representation then I'm I'm trying to see if if
+people can react in that more spontaneous way.
+
+136
+00:14:30,583 --> 00:14:30,914
+Hmm.
+
+137
+00:14:30,914 --> 00:14:32,204
+Yeah, that's interesting.
+
+138
+00:14:32,204 --> 00:14:36,136
+The relatability aspect that you mentioned is also quite interesting.
+
+139
+00:14:36,136 --> 00:14:40,068
+Like, even especially with the DNA stuff, right?
+
+140
+00:14:40,068 --> 00:14:44,670
+It's like a visual and you look at it and it's like, that's my DNA.
+
+141
+00:14:44,670 --> 00:14:45,530
+That's like me.
+
+142
+00:14:45,530 --> 00:14:48,922
+I can relate to like my person or someone else as well.
+
+143
+00:14:48,922 --> 00:14:50,723
+Like it's another human.
+
+144
+00:14:51,424 --> 00:14:51,959
+Yeah.
+
+145
+00:14:51,959 --> 00:15:09,189
+Yeah, so actually that I tried out a couple of examples and I don't think I've shown them
+to you where I took a person's silhouette and then superimposed those DNA graphics into
+
+146
+00:15:09,189 --> 00:15:10,009
+that.
+
+147
+00:15:10,090 --> 00:15:15,082
+So you have basically a dark shadow that that is the outline of
+
+148
+00:15:16,000 --> 00:15:18,883
+you know, let's say a person's profile, right?
+
+149
+00:15:18,883 --> 00:15:25,889
+And so like a shadow you would cast on the wall if you had a light behind you, you know.
+
+150
+00:15:25,889 --> 00:15:33,756
+And you know, you for most people you can say, Oh okay, yeah, that that looks like
+Christian or no, that's Sai.
+
+151
+00:15:33,756 --> 00:15:36,530
+You know, you can anyway.
+
+152
+00:15:36,530 --> 00:15:39,015
+and that made it
+
+153
+00:15:39,015 --> 00:15:46,819
+A little bit more obviously personal, you know, because these abstract graphics otherwise
+
+154
+00:15:46,819 --> 00:15:47,426
+they don't
+
+155
+00:15:47,426 --> 00:15:58,999
+They don't make it possible to look at it from a distance and say, yeah, okay, this is
+somebody I know, or show you a clear difference between two people, you know, but if you
+
+156
+00:15:58,999 --> 00:16:09,895
+combine it with that profile shadow, then that silhouette gives you a way to identify
+quickly and then you can
+
+157
+00:16:09,895 --> 00:16:10,995
+dig into it deeper.
+
+158
+00:16:10,995 --> 00:16:19,980
+So I think I would probably continue down that road if I were to pick up the project again
+and and do that.
+
+159
+00:16:20,380 --> 00:16:28,734
+Because it sort of gives you a frame that just says, okay, here we're looking at a human
+being, you know.
+
+160
+00:16:29,161 --> 00:16:29,723
+Right.
+
+161
+00:16:29,723 --> 00:16:31,686
+Yeah, that's lovely.
+

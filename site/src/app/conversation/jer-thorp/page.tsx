@@ -2,17 +2,9 @@ import { ConversationLayout } from "@/components/ConversationLayout";
 
 export default function JerThorpPage() {
   return (
-    <ConversationLayout name="Jer Thorp">
+    <ConversationLayout name="Jer Thorp" role="Artist & Author">
       <section>
-        <p
-          style={{
-            color: "rgba(255, 255, 248, 0.25)",
-            fontFamily: '"Manrope", sans-serif',
-            fontSize: "0.95rem",
-            fontStyle: "italic",
-            marginTop: "3rem",
-          }}
-        >
+        <p style={{ color: "var(--text-dim)", fontStyle: "italic" }}>
           Coming soon.
         </p>
       </section>

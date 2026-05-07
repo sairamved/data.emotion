@@ -1,0 +1,303 @@
+Sai Ram Ved V (00:00)
+hi Christian. Yeah, I just wanted to start by asking you about what you generally do because...
+
+Christian (00:03)
+Hello Sai.
+
+Sai Ram Ved V (00:10)
+I know you do a lot of biology related data visualizations and ⁓ creating tools and whatnot. So would love to hear from you. What is it that you're kind of mostly doing these days?
+
+Christian (00:24)
+⁓ yeah, so I ⁓
+
+Actually just came back from a ⁓ conference I helped organize in Cambridge, UK. that was about visualizing biological data. the conference is called VizBI and I've been attending that almost yearly since twenty eleven. the series was started in twenty ten, so yeah.
+
+This year I think was the sixteenth meeting.
+
+Yeah, I've also been a speaker in the master class that's part of the conference. this year we were talking about how how to use AI in data visualization and how useful is it at this point. what are the best techniques or you know tricks how to get the most out of
+
+Sai Ram Ved V (01:10)
+Mm-hmm.
+
+Christian (01:20)
+various AI programs when it comes to data visualization. And so, you know, the bottom line was it's that part is still very much a work in progress and they haven't figured out a great way to do that yet.
+
+Sai Ram Ved V (01:33)
+Mm-hmm.
+
+I see, okay. But it's interesting, like you have a bunch of different projects, at least on your website, and one of them is the evolving portraits thing, which I specifically wanted to touch on. Yeah, the DNA portraits one.
+
+Christian (01:53)
+The DNA portraits, yeah. Right.
+
+Sai Ram Ved V (01:56)
+Yeah, if you could maybe just tell me about how did that come about and why you chose to show people's DNA in that way.
+
+Christian (02:06)
+Yeah, so that project started a few years back when I first used twenty three and me to get my own DNA looked at and analyzed and
+
+Sai Ram Ved V (02:17)
+Mm-hmm.
+
+Christian (02:19)
+as part of what twenty three and me offers is ⁓ you can also download your own data and you know it of course shows you that the picture they give you is very limited. You know, they just sequence a small portion of your DNA there's around, I don't know, a million or so
+
+Sai Ram Ved V (02:34)
+Mm-hmm.
+
+Christian (02:44)
+data points that they basically cherry picked out of your whole genome. and
+
+Yeah. So besides all the sort of ancestry analysis and things like that that you get through twenty-threeandme, I was wondering, could I create some kind of a image that shows you a snapshot of of who you are genetically? And could I make that happen in a way that creates a different image for each person? But
+
+Sai Ram Ved V (03:09)
+Hmm.
+
+Christian (03:18)
+Not sort of in a random fashion, but in a way that's deterministic, so that if you run the same person's DNA data again, you get the same image, right? ⁓
+
+Sai Ram Ved V (03:32)
+Hey.
+
+Christian (03:34)
+And so in that sense I was curious to see, you know, like how different do different people's genomes look? You know, can you really see a difference between you and me or somebody else?
+
+like I needed to find some way to summarize a million data points into a graphic that showed you visible differences between
+
+the individual ⁓ chromosomes maybe and also you know between different individuals, the data from different people. And so
+
+Sai Ram Ved V (04:04)
+Mm-hmm.
+
+day.
+
+Christian (04:13)
+Since the data since DNA is organized in chromosomes, I thought, okay, a good starting point would be if I have one graphic for each chromosome. Okay.
+
+And so I decided I was just gonna take account of all the different nucleotide combinations that you see. and that's sort of a simple combinatorics math, you know. DNA only ha consists of four letters and then we have two positions
+
+Sai Ram Ved V (04:41)
+Mm-hmm.
+
+Christian (04:50)
+Or two letters for each position in the genome that twenty three in me reads.
+
+Sai Ram Ved V (04:56)
+Mm-hmm.
+
+Christian (04:56)
+One basically coming from your mom, one from your dad, right? So that's that's your genetic inheritance. And so for each position you either get two matching letters or they could be different letters, you know. or sometimes what happens too is you can get no read, you know, that that happens sometimes, you know, because the process isn't perfect.
+
+Sai Ram Ved V (05:01)
+Right.
+
+Christian (05:23)
+⁓ but anyway, yeah, and then I decided, okay, to
+
+show the different letters, I'm going to encode the combinations in different colors. And I basically assigned the the four printing colors that are used in printing technology, so cyan, magenta, yellow and black, to the four letters of the DNA alphabet.
+
+Sai Ram Ved V (05:39)
+Mm-hmm.
+
+Mm-hmm.
+
+Christian (05:55)
+So we
+
+have G, C, A, and T. Those are the four bases that all of the DNA is constructed from. And so when you get two A's, for example, that means it'll be pure cyan. Okay, if cyan is A, right? If you get an A and a G, then maybe that would be cyan in yellow, so that that would
+
+Sai Ram Ved V (05:58)
+Alright.
+
+Christian (06:21)
+combined to form a red U, right?
+
+Anyway, you can you get the idea. This way you can mix sort of eight different colors very easily, right?
+
+Sai Ram Ved V (06:26)
+Mm-hmm.
+
+Mm-hmm.
+
+Christian (06:32)
+So I I basically then created
+
+A page that I call the generator where where you can take your data and then display it a few different ways. So you can experiment with different shapes. We have ellipses, we have rectangles, we have squares.
+
+It was kind of fun playing around with it and ⁓
+
+Sai Ram Ved V (06:59)
+Yeah, it's interesting.
+
+mean, like the DNA is inherently like a human thing, right? We're made up of the DNA. So it's...
+
+Christian (07:05)
+Yes. Yeah. And
+
+when when you render those ellipses as outlines, then they kind of resemble the the graphics that you see for for planetary systems, you know, where everything sort of is
+
+Sai Ram Ved V (07:21)
+Hmm.
+
+Christian (07:25)
+aligned on one center, but then it it has these different paths and so that actually looked fairly poetic and
+
+Sai Ram Ved V (07:27)
+Mm-hmm.
+
+Hmm.
+
+Christian (07:35)
+And they almost seem like galaxies or some I mean, I know technically galaxy is something very, very different, but they seemed like little planetary systems.
+
+Sai Ram Ved V (07:48)
+Yeah, it's beautiful. like you have kind of the universe inside of you in a way.
+
+Christian (07:49)
+You could say.
+
+Yeah, so
+
+I don't know. The reactions I got were sort of mixed. Some people just didn't get it. They they didn't because there's nothing but geometry going on, it was maybe a little bit too abstract for for people to emotionally react to it strongly. But
+
+At the same time I did also get some reaction from people who thought about it a little bit more, maybe, and they they found it very pleasing and and appealing and and actually so because of that ⁓ a set of of these graphics also ended up on a on a C D disc that
+
+Ended up being deposited on the moon.
+
+Sai Ram Ved V (08:45)
+yes, right, I remember you talking about this before. Yeah.
+
+Christian (08:47)
+Yeah. So a friend
+
+of mine was involved in that project, sort of as a
+
+What was he? Kind of like an art director. And so they burned all these images onto
+
+Sai Ram Ved V (08:55)
+Mm-hmm.
+
+Christian (09:03)
+the surface of of small sort of C D ROM-sized golden disks that were sent to to the moon and sort of sit there like a time capsule, you know, waiting for somebody to discover it and decode it. And so we had a whole genome sequence embedded in there. But then also
+
+Sai Ram Ved V (09:09)
+Hmm.
+
+Christian (09:29)
+my representation of that same genome as ⁓ yeah encoded in these outlines and it was just a black and white image but it still looked very interesting. So
+
+Sai Ram Ved V (09:33)
+I see.
+
+Yeah, that's
+
+incredible to even think about that this piece of data visualization that you made is on the moon. But also talking about the moon, that reminds me of the paper that you sent me earlier. Well, not the article, mean. ⁓ Yesterday, I think it's Why Science Needs Art, right?
+
+Christian (09:48)
+Yeah.
+
+Mm-hmm.
+
+Yes.
+
+Sai Ram Ved V (10:06)
+that you contributed to that. one of the first few sentences, I think they mention about a film, A Trip to the Moon, 1902, that the film is sort of, like even before any of the space exploration was done, it's a piece of art. But then later, in 1969, you have Neil Armstrong and all these other astronauts actually setting foot on the moon.
+
+Christian (10:14)
+Mm-hmm.
+
+Yeah, and you can
+
+argue that art really helped inspire that space program, you know. It I don't know if it would have happened without artists first sort of imagining that that trip to the moon.
+
+Sai Ram Ved V (10:34)
+Mm-hmm.
+
+day.
+
+Christian (10:47)
+And yeah, so in that way art is a great way to to just try things out with very little risk. You know, you can you can imagine anything and if you can make it visible to people, then that can do all kinds of things, even get them to build a real rocket that
+
+Sai Ram Ved V (10:57)
+Mm-hmm.
+
+Christian (11:14)
+That takes you to the moon and do all those things.
+
+Sai Ram Ved V (11:16)
+Mm-hmm.
+
+Right, yeah, which is, guess, one of the other questions I had was, like, these two seem to be on the opposite sides of the spectrum, right? Art and
+
+science and even if we take parallels and talk about even data and emotion, Data feels like this rigid thing and emotion is like this abstract, ever flowing feeling. But.
+
+For example, in your project, you were saying there were some people who didn't get it, right? Because you don't have a rigorous connection between what the data is and what the visual is telling you what it is, right? It's not your usual bar chart or whatnot, right? So how do you think that...
+
+Christian (11:58)
+Mm-hmm.
+
+Sai Ram Ved V (12:03)
+influences how people perceive the visual. do you think that having a more rigorous visualization always is like a good thing or what are the reasons that you choose to stay away from that and do a more artistic representation?
+
+Christian (12:19)
+Mm.
+
+I mean when you when you work with an artistic representation that sort of gives you access to that world of emotion in a way, you know. you
+
+you leave the the sort of logical thinking and all the, you know, dry reasoning that goes into science behind and you enter a world that is more based on reactions, you know. 'Cause I mean that's one of the roles that emotions play in in our lives all the time, is that they give us a way to make very, very quick decisions, you know.
+
+⁓ people call it instinctively or you know gut reaction, you know, because it just it's so fast, it it just happens without you thinking about anything. And
+
+That's sort of the big difference between science and art, right? Science requires you to really consider things thoroughly and you know, you there's a lot to understand and digest before you can make any conclusions. And often that's what people find so frustrating is that desi ⁓ that scientists never
+
+Sai Ram Ved V (13:21)
+Mm-hmm.
+
+Christian (13:41)
+really want to commit to anything, there's always qualifiers and you know, ⁓ but only if all these conditions apply, then this really holds true. And whereas with feelings it's much more clear cut. You know, you you either are in love with something or you hate it, you know, or you're shocked or you're pleased, you know, or
+
+These things happen very quickly and they're very clear, you know, and relatable. And so I think by choosing a more artistic representation then I'm I'm trying to see if if people can react in that more spontaneous way.
+
+Sai Ram Ved V (14:14)
+Hmm.
+
+Hmm. Yeah, that's interesting. The relatability aspect that you mentioned is also quite interesting. Like, even especially with the DNA stuff, right? It's like a visual and you look at it and it's like, that's my DNA. That's like me. I can relate to like my person or someone else as well. Like it's another human. Yeah.
+
+Christian (14:35)
+Mm-hmm.
+
+Mm-hmm.
+
+Yeah, so actually that I tried out a couple of examples and I don't think I've shown them to you where I took a person's silhouette and then superimposed those DNA graphics into that. So you have basically a dark shadow that that is the outline of
+
+Sai Ram Ved V (15:09)
+I see.
+
+Christian (15:16)
+you know, let's say a person's profile, right? And so like a shadow you would cast on the wall if you had a light behind you, you know. And you know, you for most people you can say, ⁓ okay, yeah, that that looks like Christian or no, that's Sai. You know, you can anyway. and that made it
+
+Sai Ram Ved V (15:18)
+Hmm.
+
+Mm-hmm.
+
+Christian (15:39)
+A little bit more obviously personal, you know, because these abstract graphics otherwise
+
+Sai Ram Ved V (15:42)
+Hmm.
+
+Christian (15:46)
+they don't
+
+They don't make it possible to look at it from a distance and say, yeah, okay, this is somebody I know, or show you a clear difference between two people, you know, but if you combine it with that profile shadow, then that silhouette gives you a way to identify quickly and then you can
+
+dig into it deeper. So I think I would probably continue down that road if I were to pick up the project again and and do that. Because it sort of gives you a frame that just says, okay, here we're looking at a human being, you know.
+
+Sai Ram Ved V (16:15)
+Mm.
+
+I see.
+
+Right. Yeah, that's lovely.
+

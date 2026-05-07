@@ -4,8 +4,8 @@
 
 @font-face {
   font-family: "et-book";
-  src: url("/fonts/et-book/et-book-roman-line-figures.woff") format("woff"),
-    url("/fonts/et-book/et-book-roman-line-figures.ttf") format("truetype");
+  src: url("../../public/fonts/et-book/et-book-roman-line-figures.woff") format("woff"),
+    url("../../public/fonts/et-book/et-book-roman-line-figures.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -13,9 +13,9 @@
 
 @font-face {
   font-family: "et-book";
-  src: url("/fonts/et-book/et-book-display-italic-old-style-figures.woff")
+  src: url("../../public/fonts/et-book/et-book-display-italic-old-style-figures.woff")
       format("woff"),
-    url("/fonts/et-book/et-book-display-italic-old-style-figures.ttf")
+    url("../../public/fonts/et-book/et-book-display-italic-old-style-figures.ttf")
       format("truetype");
   font-weight: normal;
   font-style: italic;
@@ -24,21 +24,27 @@
 
 @font-face {
   font-family: "et-book";
-  src: url("/fonts/et-book/et-book-bold-line-figures.woff") format("woff"),
-    url("/fonts/et-book/et-book-bold-line-figures.ttf") format("truetype");
+  src: url("../../public/fonts/et-book/et-book-bold-line-figures.woff") format("woff"),
+    url("../../public/fonts/et-book/et-book-bold-line-figures.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  --bg: #111111;
+  --bg: #000000;
+  --bg-elev: #0a0a0a;
   --text: #fffff8;
-  --text-muted: rgba(255, 255, 248, 0.4);
-  --text-dim: rgba(255, 255, 248, 0.15);
+  --text-soft: rgba(255, 255, 248, 0.65);
+  --text-muted: rgba(255, 255, 248, 0.42);
+  --text-dim: rgba(255, 255, 248, 0.22);
+  --text-faint: rgba(255, 255, 248, 0.12);
   --border: rgba(255, 255, 248, 0.08);
+  --border-strong: rgba(255, 255, 248, 0.16);
   --font-manrope: "Manrope", sans-serif;
   --font-etbook: "et-book", serif;
+  --radius: 14px;
+  --radius-lg: 20px;
 }
 
 * {
@@ -48,9 +54,10 @@
 }
 
 html {
-  font-size: 15px;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -58,10 +65,11 @@ body {
   color: var(--text);
   font-family: var(--font-manrope);
   font-optical-sizing: auto;
+  line-height: 1.5;
 }
 
 ::selection {
-  background: rgba(255, 255, 248, 0.15);
+  background: rgba(255, 255, 248, 0.18);
   color: var(--text);
 }
 
@@ -70,306 +78,607 @@ a {
   text-decoration: none;
 }
 
-/* Tufte-inspired article styles */
-article {
-  width: 87.5%;
-  max-width: 1400px;
-  padding-left: 12.5%;
-  counter-reset: sidenote-counter;
+/* ─────────────────────────────────────────
+   Nav
+─────────────────────────────────────────── */
+.nav-link {
+  font-family: var(--font-manrope);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-soft);
+  letter-spacing: -0.005em;
+  transition: color 0.2s ease;
+}
+.nav-link:hover {
+  color: var(--text);
 }
 
-article section {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+/* ─────────────────────────────────────────
+   Hero (landing)
+─────────────────────────────────────────── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 9rem 3rem 5rem;
+  min-height: 100vh;
 }
 
-article section > p,
-article section > footer,
-article section > table {
-  width: 55%;
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  max-width: 36rem;
 }
 
-article section > ol,
-article section > ul {
-  width: 50%;
-  padding-left: 5%;
+.hero-logo {
+  transform: scale(2.2);
+  transform-origin: top left;
+  width: fit-content;
+  /* Reserve layout space equal to the scaled visual height (logo ~2.5rem × 2.2 = 5.5rem) */
+  height: 5.5rem;
+  margin-bottom: 1.25rem;
+  transition: opacity 0.25s ease-out;
 }
 
-/* FLIPPED: headings in serif (et-book), content in sans (Manrope) */
-article h1 {
-  font-family: var(--font-etbook);
-  font-weight: 700;
-  font-style: italic;
-  font-size: 3.2rem;
-  line-height: 1.1;
-  margin-top: 6rem;
-  margin-bottom: 1.5rem;
-}
-
-article h2 {
-  font-family: var(--font-etbook);
-  font-weight: 700;
-  font-style: italic;
-  font-size: 2.2rem;
-  line-height: 1;
-  margin-top: 3rem;
-  margin-bottom: 0.5rem;
-}
-
-article h3 {
-  font-family: var(--font-etbook);
-  font-weight: 400;
-  font-size: 1.7rem;
-  font-style: italic;
-  margin-top: 2.5rem;
-  margin-bottom: 0.3rem;
-  line-height: 1;
-}
-
-article p {
+.hero-tagline {
   font-family: var(--font-manrope);
   font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.8;
-  margin-top: 1.4rem;
-  margin-bottom: 1.4rem;
-  letter-spacing: -0.01em;
-}
-
-article p strong {
+  font-size: 1.05rem;
+  line-height: 1.55;
   color: var(--text-muted);
-  font-weight: 400;
+  max-width: 28rem;
+  letter-spacing: -0.005em;
 }
 
-article p.subtitle {
-  font-family: var(--font-manrope);
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1rem;
-  display: block;
-  line-height: 1.8;
-  color: var(--text-muted);
-}
-
-article blockquote {
-  font-family: var(--font-manrope);
-  font-size: 1rem;
-  width: 55%;
-  margin-left: 0;
-  padding-left: 1.4rem;
-  border-left: 2px solid rgba(255, 255, 248, 0.1);
-  color: var(--text-muted);
-  line-height: 1.8;
-}
-
-article blockquote p {
+.hero-video {
   width: 100%;
-  margin-bottom: 0;
+  max-width: 26rem;
+  justify-self: end;
 }
 
-/* Sidenotes */
-.sidenote,
-.marginnote {
-  float: right;
-  clear: right;
-  margin-right: -60%;
-  width: 50%;
-  margin-top: 0.3rem;
-  margin-bottom: 0;
-  font-family: var(--font-manrope);
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--text-muted);
-  vertical-align: baseline;
-  position: relative;
+.hero-video video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
 }
 
-.sidenote-number {
-  counter-increment: sidenote-counter;
+/* ─────────────────────────────────────────
+   People list (landing) — simple left-aligned
+─────────────────────────────────────────── */
+.people-list {
+  padding: 4rem 3rem 8rem;
 }
 
-.sidenote-number:after,
-.sidenote:before {
-  font-size: 0.8rem;
-  position: relative;
-  vertical-align: baseline;
-}
-
-.sidenote-number:after {
-  content: counter(sidenote-counter);
-  top: -0.5rem;
-  left: 0.1rem;
-  color: var(--text-muted);
-}
-
-.sidenote:before {
-  content: counter(sidenote-counter) " ";
-  top: -0.5rem;
-  color: var(--text-muted);
-}
-
-input.margin-toggle {
-  display: none;
-}
-
-label.margin-toggle:not(.sidenote-number) {
-  display: none;
-}
-
-.newthought {
-  font-variant: small-caps;
-  font-size: 1.2em;
-  letter-spacing: 0.05em;
-}
-
-.fullwidth {
-  max-width: 90%;
-  clear: both;
-}
-
-/* Epigraph */
-.epigraph {
-  margin: 3em 0;
-}
-
-.epigraph blockquote {
-  margin-top: 2em;
-  margin-bottom: 2em;
-}
-
-.epigraph blockquote footer {
-  font-style: normal;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-}
-
-/* About link */
-.about-link {
+.people-label {
   font-family: var(--font-manrope);
   font-weight: 500;
-  font-size: 0.85rem;
-  color: #fffff8;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 2rem;
+}
+
+.people-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.person-row-simple {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.7rem 0;
   text-decoration: none;
-  transition: color 0.2s ease;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.person-row-simple[data-coming-soon="true"] {
+  cursor: default;
+}
+
+.person-name-simple {
+  font-family: var(--font-etbook);
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  line-height: 1.2;
+  transition: color 0.25s ease;
+}
+
+.person-coming-soon {
+  font-family: var(--font-manrope);
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: rgba(255, 255, 248, 0.15);
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────
+   Page footer
+─────────────────────────────────────────── */
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 2.5rem 3rem;
+  font-family: var(--font-manrope);
+  font-size: 0.78rem;
+  color: var(--text-dim);
   letter-spacing: 0.02em;
+  border-top: 1px solid var(--border);
 }
 
-.about-link:hover {
-  color: rgba(255, 255, 248, 0.9);
+/* ─────────────────────────────────────────
+   Conversation page
+─────────────────────────────────────────── */
+.conversation {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 9rem 2rem 0;
 }
 
-/* Back link */
-.back-link {
+.conversation-header {
+  max-width: 38rem;
+  margin: 0 auto 5rem;
+  padding: 0 1rem;
+}
+
+.conversation-title {
+  font-family: var(--font-etbook);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(2.6rem, 5vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 248, 0.82);
+  margin-bottom: 1.2rem;
+}
+
+.conversation-meta {
   font-family: var(--font-manrope);
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 248, 0.4);
-  text-decoration: none;
-  transition: color 0.2s ease;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  text-transform: uppercase;
 }
 
-.back-link:hover {
-  color: rgba(255, 255, 248, 0.8) !important;
+.meta-sep {
+  color: var(--text-faint);
 }
 
-/* Sidebar links */
-.sidebar-link:hover {
-  color: rgba(255, 255, 248, 0.8) !important;
+.conversation-body a.meta-link,
+.meta-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-skip-ink: auto;
+  cursor: pointer;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+}
+.conversation-body a.meta-link:hover,
+.meta-link:hover {
+  color: var(--text);
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
-}
-
-.content-main {
-  margin-left: 220px;
-}
-
-/* ── Conversation play button ── */
-.conversation-play-btn {
+.meta-icon-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 248, 0.06);
-  border: 1px solid rgba(255, 255, 248, 0.1);
-  border-radius: 6px;
-  color: rgba(255, 255, 248, 0.5);
+  color: var(--text-muted);
+  margin-right: 0.55rem;
+  transition: color 0.2s ease;
+  vertical-align: -0.18em;
+}
+.meta-icon-link:hover {
+  color: var(--text);
+}
+
+.listen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 2rem;
+  padding: 0.6rem 1rem 0.6rem 0.9rem;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--text-soft);
   font-family: var(--font-manrope);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.005em;
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
-.conversation-play-btn:hover {
-  background: rgba(255, 255, 248, 0.1);
-  color: rgba(255, 255, 248, 0.8);
-  border-color: rgba(255, 255, 248, 0.18);
+.listen-btn:hover {
+  background: rgba(255, 255, 248, 0.06);
+  color: var(--text);
+  border-color: rgba(255, 255, 248, 0.28);
+}
+.listen-btn svg {
+  flex-shrink: 0;
+  opacity: 0.85;
 }
 
-/* ── Audio Player ── */
+.conversation-body {
+  max-width: 38rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.conversation-body section {
+  margin-bottom: 4.5rem;
+}
+
+.conversation-body h2 {
+  font-family: var(--font-etbook);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: rgba(255, 255, 248, 0.82);
+  margin: 4rem 0 1.6rem;
+}
+
+.conversation-body h3 {
+  font-family: var(--font-etbook);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  color: rgba(255, 255, 248, 0.82);
+  margin: 2.5rem 0 1rem;
+}
+
+.conversation-body p {
+  font-family: var(--font-manrope);
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-soft);
+  letter-spacing: -0.005em;
+  margin: 1.2rem 0;
+  transition: color 0.4s ease, opacity 0.4s ease;
+}
+
+/* Speaker avatars — only on first paragraph after a speaker change */
+.conversation-body p[data-speaker] {
+  position: relative;
+}
+.conversation-body p[data-speaker-first="true"]::before {
+  content: "";
+  position: absolute;
+  top: 0.45em;
+  left: -2.4rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(255, 255, 248, 0.06);
+}
+
+@media (max-width: 1100px) {
+  /* Avatars hidden on smaller screens — no margin to put them in */
+  .conversation-body p[data-speaker]::before {
+    display: none;
+  }
+}
+
+.conversation-body p[data-speaker="sai"]::before {
+  background-image: url("/images/sai.jpg");
+}
+.conversation-body p[data-speaker="christian"]::before {
+  background-image: url("/images/christian-stolte.jpeg");
+}
+.conversation-body p[data-speaker="giada"]::before {
+  background-image: url("/images/giada.jpeg");
+}
+
+/* Audio sync: when a paragraph is active, others dim */
+.conversation-body p[data-active="true"] {
+  color: var(--text);
+}
+.conversation-body p[data-active="true"] strong {
+  color: var(--text);
+}
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]),
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) strong,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) a,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) em,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) .sidenote,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) .marginnote,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) .sidenote-number,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) .sidenote a,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) .marginnote a {
+  color: var(--text-faint);
+}
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) a,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) .sidenote a,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) .marginnote a {
+  text-decoration-color: var(--text-faint);
+}
+/* The sidenote-number ::after content (the small superscript) */
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) .sidenote-number::after,
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"]) .sidenote::before {
+  color: var(--text-faint);
+}
+/* Dim avatars in non-active paragraphs too */
+.conversation-body:has(p[data-active="true"]) p:not([data-active="true"])::before {
+  opacity: 0.3;
+}
+
+.conversation-body p strong {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.conversation-body p em {
+  font-family: var(--font-etbook);
+  font-style: italic;
+  font-size: 1.1em;
+  color: var(--text);
+}
+
+.conversation-body blockquote {
+  margin: 2.5rem 0;
+  padding: 1.4rem 1.6rem;
+  border-left: 2px solid var(--border-strong);
+  background: rgba(255, 255, 248, 0.025);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--text-soft);
+}
+
+.conversation-body blockquote p {
+  margin: 0;
+  font-style: italic;
+  font-family: var(--font-etbook);
+  font-size: 1.15rem;
+  line-height: 1.55;
+}
+
+.conversation-body blockquote footer {
+  margin-top: 0.8rem;
+  font-family: var(--font-manrope);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-style: normal;
+  letter-spacing: 0.02em;
+}
+
+/* Sidenotes — Tufte-style. Body is 38rem centered in 78rem container,
+   so the right margin is ~20rem wide. Float sidenotes there. */
+.conversation-body {
+  counter-reset: sidenote-counter;
+}
+
+.conversation-body .sidenote-number {
+  counter-increment: sidenote-counter;
+}
+
+.conversation-body .sidenote-number::after,
+.conversation-body .sidenote::before {
+  font-family: var(--font-manrope);
+  font-feature-settings: "sups" 1;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.conversation-body .sidenote-number::after {
+  content: counter(sidenote-counter);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  top: -0.5rem;
+  margin-left: 0.2rem;
+  margin-right: 0.15rem;
+  cursor: pointer;
+}
+
+.conversation-body .sidenote::before {
+  content: counter(sidenote-counter) " ";
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-right: 0.4rem;
+  top: -0.4rem;
+}
+
+.conversation-body .sidenote,
+.conversation-body .marginnote {
+  float: right;
+  clear: right;
+  margin-right: -19rem;
+  width: 16rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-manrope);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  letter-spacing: 0;
+  vertical-align: baseline;
+  position: relative;
+}
+
+/* Hide the input checkbox; only used for mobile toggle */
+.conversation-body input.margin-toggle {
+  display: none;
+}
+
+/* Margin-toggle (the ⊕ symbol) is hidden on desktop */
+.conversation-body label.margin-toggle:not(.sidenote-number) {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  /* Not enough side room for floating sidenotes — collapse to inline-toggleable notes */
+  .conversation-body .sidenote,
+  .conversation-body .marginnote {
+    display: none;
+  }
+  .conversation-body .margin-toggle:checked + .sidenote,
+  .conversation-body .margin-toggle:checked + .marginnote {
+    display: block;
+    float: none;
+    clear: both;
+    width: 100%;
+    margin: 1rem 0;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 255, 248, 0.04);
+    border-left: 2px solid var(--border-strong);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .conversation-body label.margin-toggle:not(.sidenote-number) {
+    display: inline;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .conversation-body label.sidenote-number {
+    display: inline;
+  }
+}
+
+/* Carousel — three videos side by side, breaks wider than text */
+.conversation-body .carousel {
+  display: flex;
+  gap: 1rem;
+  margin: 3rem -7rem;
+  align-items: center;
+  justify-content: center;
+}
+.conversation-body .carousel video,
+.conversation-body .carousel img {
+  flex: 1 1 0;
+  min-width: 0;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+}
+/* Middle video (flame) gets more horizontal real estate */
+.conversation-body .carousel video:nth-child(2),
+.conversation-body .carousel img:nth-child(2) {
+  flex: 1.6 1 0;
+}
+
+@media (max-width: 900px) {
+  .conversation-body .carousel {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 2rem 0;
+  }
+  .conversation-body .carousel video,
+  .conversation-body .carousel img,
+  .conversation-body .carousel video:nth-child(2),
+  .conversation-body .carousel img:nth-child(2) {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
+/* Wide content: images / figures break out wider than text column */
+.conversation-body figure,
+.conversation-body .figure {
+  margin: 3.5rem auto;
+  max-width: 64rem;
+  width: calc(100% + 14rem);
+  margin-left: -7rem;
+  margin-right: -7rem;
+}
+
+.conversation-body figure img,
+.conversation-body figure video,
+.conversation-body .figure img,
+.conversation-body .figure video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
+  background: var(--bg-elev);
+}
+
+.conversation-body figure figcaption,
+.conversation-body .figure-caption {
+  margin-top: 0.75rem;
+  padding: 0;
+  font-family: var(--font-manrope);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────
+   Audio Player (matches new aesthetic)
+─────────────────────────────────────────── */
 .audio-player {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  height: auto;
-  padding: 0 0 2rem;
-}
-
-.audio-player-bg {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    #111111 0%,
-    rgba(17, 17, 17, 0.97) 40%,
-    rgba(17, 17, 17, 0.85) 70%,
-    transparent 100%
-  );
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: 0 1.5rem 1.5rem;
   pointer-events: none;
 }
 
+.audio-player-bg {
+  display: none;
+}
+
 .audio-player-controls {
+  pointer-events: auto;
   position: relative;
-  max-width: 540px;
+  max-width: 36rem;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0.85rem 1rem 0.85rem 0.85rem;
+  background: rgba(15, 15, 15, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 0.85rem;
 }
 
 .audio-player-details {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
+  min-width: 0;
+  flex-shrink: 1;
+  flex-grow: 0;
+  max-width: 11rem;
 }
 
 .audio-player-cover {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
-  background: rgba(255, 255, 248, 0.05);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(255, 255, 248, 0.06);
 }
 
 .audio-player-orb {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(255, 255, 248, 0.12), rgba(255, 255, 248, 0.04));
+  background: linear-gradient(135deg, rgba(255, 255, 248, 0.18), rgba(255, 255, 248, 0.04));
   border-radius: 8px;
 }
 
@@ -381,56 +690,63 @@ label.margin-toggle:not(.sidenote-number) {
 
 .audio-player-title {
   font-family: var(--font-manrope);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 550;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -0.005em;
 }
 
 .audio-player-author {
   font-family: var(--font-manrope);
-  font-size: 0.8rem;
+  font-size: 0.74rem;
   font-weight: 400;
-  color: rgba(255, 255, 248, 0.35);
+  color: var(--text-muted);
+  letter-spacing: 0;
 }
 
-/* Progress bar */
+/* Progress */
 .audio-player-progress {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.55rem;
+  min-width: 0;
 }
 
 .audio-player-time {
   font-family: var(--font-manrope);
   font-size: 0.7rem;
   font-weight: 450;
-  color: rgba(255, 255, 248, 0.35);
-  min-width: 2.5em;
+  color: var(--text-muted);
   font-variant-numeric: tabular-nums;
-}
-
-.audio-player-time:last-child {
-  text-align: right;
+  flex-shrink: 0;
 }
 
 .audio-player-slider {
   flex: 1;
-  height: 20px;
+  min-width: 0;
+  height: 16px;
   display: flex;
   align-items: center;
   cursor: pointer;
+  position: relative;
 }
 
 .audio-player-track {
   width: 100%;
-  height: 3px;
-  background: rgba(255, 255, 248, 0.08);
+  height: 2px;
+  background: rgba(255, 255, 248, 0.1);
   border-radius: 2px;
   position: relative;
   overflow: hidden;
+  transition: height 0.15s ease;
+}
+
+.audio-player-slider:hover .audio-player-track {
+  height: 4px;
 }
 
 .audio-player-indicator {
@@ -438,140 +754,157 @@ label.margin-toggle:not(.sidenote-number) {
   top: 0;
   left: 0;
   height: 100%;
-  background: rgba(255, 255, 248, 0.5);
+  background: var(--text);
   border-radius: 2px;
   transition: width 0.1s linear;
 }
 
-.audio-player-slider:hover .audio-player-indicator {
-  background: rgba(255, 255, 248, 0.7);
-}
-
-/* Controls */
+/* Buttons */
 .audio-player-buttons {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
+  gap: 0.1rem;
+  flex-shrink: 0;
 }
 
 .audio-player-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   border: none;
   background: transparent;
-  color: rgba(255, 255, 248, 0.5);
+  color: var(--text-muted);
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: all 0.15s ease;
 }
-
 .audio-player-btn:hover {
-  color: rgba(255, 255, 248, 0.9);
+  color: var(--text);
   background: rgba(255, 255, 248, 0.06);
 }
 
 .audio-player-btn-play {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
   color: var(--text);
 }
 
-.audio-player-btn-play:hover {
-  color: var(--text);
-  background: rgba(255, 255, 248, 0.08);
-}
-
-/* Speed selector */
 .audio-player-speed {
-  margin-left: 0.5rem;
+  margin-left: 0.2rem;
 }
 
 .audio-player-speed-select {
   background: transparent;
-  border: 1px solid rgba(255, 255, 248, 0.1);
-  color: rgba(255, 255, 248, 0.4);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
   font-family: var(--font-manrope);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 500;
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
+  padding: 0.18rem 0.35rem;
+  border-radius: 5px;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   text-align: center;
+  font-variant-numeric: tabular-nums;
   transition: all 0.15s ease;
 }
-
 .audio-player-speed-select:hover {
-  border-color: rgba(255, 255, 248, 0.2);
-  color: rgba(255, 255, 248, 0.6);
+  border-color: var(--border-strong);
+  color: var(--text);
 }
-
 .audio-player-speed-select option {
-  background: #222;
-  color: #fffff8;
+  background: #0a0a0a;
+  color: var(--text);
 }
 
-/* Responsive */
-@media (max-width: 760px) {
-  article {
+/* ─────────────────────────────────────────
+   Logo container — keep transitions stable
+─────────────────────────────────────────── */
+.logo-container {
+  white-space: nowrap;
+}
+
+/* ─────────────────────────────────────────
+   About page (uses .conversation styles)
+─────────────────────────────────────────── */
+
+/* ─────────────────────────────────────────
+   Responsive
+─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 7rem 1.5rem 3rem;
+    gap: 3rem;
+    min-height: auto;
+  }
+  .hero-logo {
+    transform: scale(2);
+    height: 5rem;
+    margin-bottom: 1rem;
+  }
+  .hero-video {
+    aspect-ratio: 1 / 1;
+  }
+  .people-list {
+    padding: 3rem 1.5rem 4rem;
+  }
+  .person-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .person-role {
+    text-transform: uppercase;
+  }
+  .conversation {
+    padding: 7rem 2rem 0;
+  }
+  .conversation-header,
+  .conversation-body {
+    padding: 0;
+  }
+  .conversation-title {
+    font-size: clamp(2rem, 9vw, 2.6rem);
+  }
+  .conversation-body h2 {
+    font-size: clamp(1.5rem, 6vw, 1.9rem);
+  }
+  .conversation-body p {
+    font-size: 0.98rem;
+  }
+  .conversation-body figure,
+  .conversation-body .figure {
     width: 100%;
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  article section > p,
-  article section > footer,
-  article section > table,
-  article section > ol,
-  article section > ul {
-    width: 100%;
-  }
-
-  article blockquote {
-    width: 100%;
-  }
-
-  article h1 {
-    font-size: 2.4rem;
-    margin-top: 6rem;
-  }
-
-  .sidenote,
-  .marginnote {
-    display: none;
-  }
-
-  .margin-toggle:checked + .sidenote,
-  .margin-toggle:checked + .marginnote {
-    display: block;
-    float: left;
-    left: 1rem;
-    clear: both;
-    width: 95%;
-    margin: 1rem 2.5%;
-    position: relative;
-  }
-
-  label.margin-toggle:not(.sidenote-number) {
-    display: inline;
-    cursor: pointer;
-    color: var(--text-muted);
-  }
-
-  .content-sidebar {
-    display: none !important;
-  }
-
-  .content-main {
     margin-left: 0;
+    margin-right: 0;
   }
-
+  .conversation-body figure figcaption,
+  .conversation-body .figure-caption {
+    padding: 0;
+  }
+  .page-footer {
+    padding: 2rem 1.5rem;
+    font-size: 0.72rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .audio-player {
+    padding: 0 1rem 1rem;
+  }
   .audio-player-controls {
-    padding: 0 1.5rem;
+    padding: 0.7rem 0.7rem 0.7rem 0.7rem;
+    gap: 0.5rem;
+  }
+  .audio-player-details {
+    max-width: 8rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .audio-player-details {
+    display: none;
   }
 }

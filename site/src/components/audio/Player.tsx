@@ -81,9 +81,6 @@ export function Player() {
       <div className="audio-player-controls">
         {/* Details */}
         <div className="audio-player-details">
-          <div className="audio-player-cover">
-            <div className="audio-player-orb" />
-          </div>
           <div className="audio-player-info">
             <div className="audio-player-title">{title}</div>
             <div className="audio-player-author">{author}</div>
@@ -121,10 +118,8 @@ export function Player() {
             }}
             aria-label="Rewind 15 seconds"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M11 17a1 1 0 0 1-1-1v-4l-5 3V9l5 3V8a1 1 0 0 1 1 1v3l5-3v6l-5-3v3a1 1 0 0 1-1 1z" fill="currentColor" stroke="none" />
-              <path d="M3 12a9 9 0 1 0 9-9" />
-              <polyline points="3 7 3 3 7 3" />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C17.5228 2 22 6.47715 22 12 22 17.5228 17.5228 22 12 22 6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20 16.4183 20 20 16.4183 20 12 20 7.58172 16.4183 4 12 4 9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM8.5 15.5V8.5H10V15.5H8.5ZM12 8.5H16.75V10H13.5V11.25H14.875C16.0486 11.25 17 12.2014 17 13.375 17 14.5486 16.0486 15.5 14.875 15.5H12V14H14.875C15.2202 14 15.5 13.7202 15.5 13.375 15.5 13.0298 15.2202 12.75 14.875 12.75H12V8.5Z" />
             </svg>
           </button>
           <button
@@ -160,10 +155,8 @@ export function Player() {
             }}
             aria-label="Forward 15 seconds"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M13 17a1 1 0 0 0 1-1v-4l5 3V9l-5 3V8a1 1 0 0 0-1 1v3l-5-3v6l5-3v3a1 1 0 0 0 1 1z" fill="currentColor" stroke="none" />
-              <path d="M21 12a9 9 0 1 1-9-9" />
-              <polyline points="21 7 21 3 17 3" />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.47715 2 2 6.47715 2 12 2 17.5228 6.47715 22 12 22 17.5228 22 22 17.5228 22 12H20C20 16.4183 16.4183 20 12 20 7.58172 20 4 16.4183 4 12 4 7.58172 7.58172 4 12 4 14.7498 4 17.1755 5.38734 18.6155 7.50024L16 7.5V8.5H12V12.75H14.875C15.2202 12.75 15.5 13.0298 15.5 13.375 15.5 13.7202 15.2202 14 14.875 14H12V15.5H14.875C16.0486 15.5 17 14.5486 17 13.375 17 12.2014 16.0486 11.25 14.875 11.25H13.5V10H16.75V9.5H22V3.5H20L20.0001 5.99918C18.1757 3.57075 15.2713 2 12 2ZM8.5 8.5H10V15.5H8.5V8.5Z" />
             </svg>
           </button>
           {/* Speed selector */}
