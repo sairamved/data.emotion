@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { Nav } from "@/components/Nav";
 import { playTap, preloadTaps } from "@/lib/sounds";
+import { asset } from "@/lib/asset";
 
 interface Person {
   name: string;
@@ -74,7 +75,7 @@ export default function Home() {
         </div>
         <div className="hero-video">
           <video
-            src="/videos/genuary26-29.mp4"
+            src={asset("/videos/genuary26-29.mp4")}
             autoPlay
             loop
             muted

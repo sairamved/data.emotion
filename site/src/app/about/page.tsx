@@ -1,4 +1,5 @@
 import { Nav } from "@/components/Nav";
+import { asset } from "@/lib/asset";
 
 export default function AboutPage() {
   return (
@@ -44,7 +45,7 @@ export default function AboutPage() {
 
           <div className="carousel">
             <video
-              src="/videos/genuary26-29.mp4"
+              src={asset("/videos/genuary26-29.mp4")}
               autoPlay
               loop
               muted
@@ -52,7 +53,7 @@ export default function AboutPage() {
               preload="auto"
             />
             <video
-              src="/videos/flame.mp4"
+              src={asset("/videos/flame.mp4")}
               autoPlay
               loop
               muted
@@ -60,7 +61,7 @@ export default function AboutPage() {
               preload="auto"
             />
             <video
-              src="/videos/genuary26-20.mp4"
+              src={asset("/videos/genuary26-20.mp4")}
               autoPlay
               loop
               muted

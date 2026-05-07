@@ -1,5 +1,6 @@
 import { ConversationLayout } from "@/components/ConversationLayout";
 import { Sidenote } from "@/components/Sidenote";
+import { asset } from "@/lib/asset";
 
 export default function ChristianStoltePage() {
   return (
@@ -21,7 +22,7 @@ export default function ChristianStoltePage() {
           Data Visualization Designer
         </>
       }
-      audioUrl="/audio/Christian.mp3"
+      audioUrl={asset("/audio/Christian.mp3")}
     >
       <section>
         <p data-time="0" data-speaker="sai">
@@ -154,7 +155,7 @@ export default function ChristianStoltePage() {
             rel="noopener noreferrer"
           >
             <img
-              src="/images/dna-ellipses2.png"
+              src={asset("/images/dna-ellipses2.png")}
               alt="DNA portrait rendered as concentric ellipses, one shape per chromosome"
             />
           </a>

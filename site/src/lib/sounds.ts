@@ -1,11 +1,13 @@
 "use client";
 
+import { asset } from "./asset";
+
 const TAP_FILES = [
-  "/audio/taps/tap_01.wav",
-  "/audio/taps/tap_02.wav",
-  "/audio/taps/tap_03.wav",
-  "/audio/taps/tap_04.wav",
-  "/audio/taps/tap_05.wav",
+  asset("/audio/taps/tap_01.wav"),
+  asset("/audio/taps/tap_02.wav"),
+  asset("/audio/taps/tap_03.wav"),
+  asset("/audio/taps/tap_04.wav"),
+  asset("/audio/taps/tap_05.wav"),
 ];
 
 let audioContext: AudioContext | null = null;

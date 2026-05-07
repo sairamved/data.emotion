@@ -380,13 +380,13 @@ a {
 }
 
 .conversation-body p[data-speaker="sai"]::before {
-  background-image: url("/images/sai.jpg");
+  background-image: url("../../public/images/sai.jpg");
 }
 .conversation-body p[data-speaker="christian"]::before {
-  background-image: url("/images/christian-stolte.jpeg");
+  background-image: url("../../public/images/christian-stolte.jpeg");
 }
 .conversation-body p[data-speaker="giada"]::before {
-  background-image: url("/images/giada.jpeg");
+  background-image: url("../../public/images/giada.jpeg");
 }
 
 /* Audio sync: when a paragraph is active, others dim */

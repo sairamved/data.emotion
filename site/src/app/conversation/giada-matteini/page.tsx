@@ -1,5 +1,6 @@
 import { ConversationLayout } from "@/components/ConversationLayout";
 import { Sidenote } from "@/components/Sidenote";
+import { asset } from "@/lib/asset";
 
 export default function GiadaMatteiniPage() {
   return (
@@ -30,7 +31,7 @@ export default function GiadaMatteiniPage() {
           (Wandering Avian Dance Experience)
         </>
       }
-      audioUrl="/audio/Giada.mp3"
+      audioUrl={asset("/audio/Giada.mp3")}
     >
       <section>
         <figure>
@@ -40,7 +41,7 @@ export default function GiadaMatteiniPage() {
             rel="noopener noreferrer"
           >
             <img
-              src="/images/wade-unspoken-unbroken-1.jpeg"
+              src={asset("/images/wade-unspoken-unbroken-1.jpeg")}
               alt="WADE — unspoken//unbroken exhibition"
             />
           </a>
@@ -111,7 +112,7 @@ export default function GiadaMatteiniPage() {
             rel="noopener noreferrer"
           >
             <img
-              src="/images/wade-unspoken-unbroken.jpeg"
+              src={asset("/images/wade-unspoken-unbroken.jpeg")}
               alt="WADE — unspoken//unbroken exhibition installation"
             />
           </a>
@@ -334,7 +335,7 @@ export default function GiadaMatteiniPage() {
             rel="noopener noreferrer"
           >
             <video
-              src="/videos/giada-piece.mp4"
+              src={asset("/videos/giada-piece.mp4")}
               autoPlay
               loop
               muted
@@ -443,7 +444,7 @@ export default function GiadaMatteiniPage() {
             rel="noopener noreferrer"
           >
             <img
-              src="/images/wade-unspoken-unbroken-4.jpeg"
+              src={asset("/images/wade-unspoken-unbroken-4.jpeg")}
               alt="WADE — unspoken//unbroken, performance with flowers"
             />
           </a>
@@ -572,7 +573,7 @@ export default function GiadaMatteiniPage() {
             rel="noopener noreferrer"
           >
             <img
-              src="/images/wade-unspoken-unbroken-5.jpg"
+              src={asset("/images/wade-unspoken-unbroken-5.jpg")}
               alt="WADE — unspoken//unbroken, gallery scene"
             />
           </a>
