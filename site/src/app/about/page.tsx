@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { asset } from "@/lib/asset";
 
@@ -131,6 +132,19 @@ export default function AboutPage() {
           </section>
 
           <section>
+            <p>
+              There&rsquo;s also a small participatory piece &mdash; an
+              archive of how people <em>feel</em> about data and emotion.
+              You can{" "}
+              <Link href="/draw" className="meta-link">
+                draw your own
+              </Link>
+              , or{" "}
+              <Link href="/gallery" className="meta-link">
+                see the archive
+              </Link>
+              .
+            </p>
             <p>
               If you&rsquo;re someone who&rsquo;s actively engaged in thinking
               about this, let&rsquo;s talk. Reach me at{" "}

@@ -24,6 +24,7 @@ const people: Person[] = [
 
 export default function Home() {
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
+  const [hoveredArchive, setHoveredArchive] = useState<string | null>(null);
   const [docked, setDocked] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const heroLogoRef = useRef<HTMLDivElement>(null);
@@ -122,6 +123,40 @@ export default function Home() {
               {person.comingSoon && (
                 <span className="person-coming-soon">coming soon</span>
               )}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="people-list">
+        <p className="people-label">Drawing Archive</p>
+        <div className="people-rows">
+          {[
+            { href: "/draw", label: "Draw your own", suffix: "data + emotion", id: "draw" },
+            { href: "/gallery", label: "See the archive", suffix: "live", id: "gallery" },
+          ].map((item) => (
+            <Link
+              key={item.id}
+              href={item.href}
+              onClick={() => playTap()}
+              onMouseEnter={() => setHoveredArchive(item.id)}
+              onMouseLeave={() => setHoveredArchive(null)}
+              className="person-row-simple"
+            >
+              <span
+                className="person-name-simple"
+                style={{
+                  color:
+                    hoveredArchive === null
+                      ? "rgba(255, 255, 248, 0.6)"
+                      : hoveredArchive === item.id
+                        ? "#fffff8"
+                        : "rgba(255, 255, 248, 0.15)",
+                }}
+              >
+                {item.label}
+              </span>
+              <span className="person-coming-soon">{item.suffix}</span>
             </Link>
           ))}
         </div>

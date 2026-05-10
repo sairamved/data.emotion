@@ -908,3 +908,485 @@ a {
     display: none;
   }
 }
+
+/* ─────────────────────────────────────────
+   Draw page (/draw)
+─────────────────────────────────────────── */
+.draw-page {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 7rem 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.draw-prompt {
+  max-width: 38rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.draw-prompt-eyebrow {
+  font-family: var(--font-manrope);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.9rem;
+}
+
+.draw-prompt-title {
+  font-family: var(--font-etbook);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: rgba(255, 255, 248, 0.82);
+}
+
+.draw-prompt-title em {
+  font-weight: 900;
+  font-style: italic;
+  color: var(--text);
+}
+
+.draw-canvas-frame {
+  position: relative;
+  width: min(100%, 56rem);
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+  margin-bottom: 1.5rem;
+}
+
+.draw-canvas-container {
+  width: 100%;
+  height: 100%;
+}
+
+.draw-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  min-height: 3rem;
+  align-items: center;
+}
+
+.draw-btn {
+  font-family: var(--font-manrope);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  padding: 0.7rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.draw-btn:hover {
+  background: rgba(255, 255, 248, 0.06);
+  color: var(--text);
+  border-color: rgba(255, 255, 248, 0.28);
+}
+
+.draw-btn-primary {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+.draw-btn-primary:hover {
+  background: rgba(255, 255, 248, 0.92);
+  color: var(--bg);
+  border-color: rgba(255, 255, 248, 0.92);
+}
+
+.draw-btn-secondary {
+  /* base style is fine */
+}
+
+/* Icon-only round buttons for /draw */
+.draw-icon-btn {
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+.draw-icon-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 248, 0.06);
+  color: var(--text);
+  border-color: rgba(255, 255, 248, 0.28);
+}
+.draw-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.draw-icon-btn-primary {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+.draw-icon-btn-primary:hover:not(:disabled) {
+  background: rgba(255, 255, 248, 0.92);
+  color: var(--bg);
+  border-color: rgba(255, 255, 248, 0.92);
+}
+
+/* Corner-positioned action buttons inside the canvas frame */
+.draw-icon-btn-tl {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 5;
+}
+.draw-icon-btn-tr {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+}
+
+.draw-saving {
+  font-family: var(--font-manrope);
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 4rem;
+}
+
+.draw-thanks {
+  max-width: 36rem;
+  text-align: center;
+  margin: 6rem auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.draw-thanks-eyebrow {
+  font-family: var(--font-manrope);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.draw-thanks-title {
+  font-family: var(--font-etbook);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 248, 0.82);
+}
+
+.draw-thanks-title em {
+  font-weight: 900;
+  font-style: italic;
+  color: var(--text);
+}
+
+.draw-thanks-body {
+  font-family: var(--font-manrope);
+  font-size: 1rem;
+  color: var(--text-soft);
+}
+
+.draw-thanks-syncing {
+  font-family: var(--font-manrope);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.draw-thanks-foot {
+  font-family: var(--font-manrope);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 1rem;
+}
+
+/* ─────────────────────────────────────────
+   Gallery page (/gallery)
+─────────────────────────────────────────── */
+.gallery-article {
+  max-width: 84rem;
+}
+
+.gallery-header {
+  max-width: 100%;
+  text-align: center;
+}
+
+.gallery-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.6rem 2.5rem;
+  margin-top: 1.8rem;
+  margin-bottom: 1.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.gallery-stats > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.gallery-stat-num {
+  font-family: var(--font-etbook);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text);
+}
+
+.gallery-stat-label {
+  font-family: var(--font-manrope);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.gallery-toggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.6rem;
+  padding: 0.3rem;
+  background: rgba(255, 255, 248, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  align-items: center;
+}
+
+.gallery-toggle-btn {
+  font-size: 0.92rem;
+  padding: 0.45rem 1.1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+.gallery-toggle-btn:hover {
+  color: var(--text);
+}
+.gallery-toggle-btn[data-active="true"] {
+  background: var(--text);
+  color: var(--bg);
+}
+.gallery-toggle-cta {
+  background: rgba(255, 255, 248, 0.06);
+  color: var(--text-soft);
+}
+.gallery-toggle-cta:hover {
+  background: rgba(255, 255, 248, 0.12);
+}
+
+/* Sub-filter for grid view (Both / Data only / Emotion only) */
+.gallery-subfilter-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.gallery-subfilter {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  background: rgba(255, 255, 248, 0.025);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  align-items: center;
+}
+
+.gallery-subfilter-btn {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.95rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+.gallery-subfilter-btn:hover {
+  color: var(--text);
+}
+.gallery-subfilter-btn[data-active="true"] {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* Serif italic + sans pairing inside toggle/subfilter labels.
+   Mirrors the D + E logo's mix. */
+.serif-em {
+  font-family: var(--font-etbook);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 1.05em;
+  letter-spacing: -0.01em;
+}
+.sans-tag {
+  font-family: var(--font-manrope);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+.gallery-toggle-btn em,
+.gallery-subfilter-btn em {
+  font-family: var(--font-etbook);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 1.05em;
+  letter-spacing: -0.01em;
+}
+
+
+/* Single-column grid when filtering data-only or emotion-only */
+.gallery-grid[data-filter="data"],
+.gallery-grid[data-filter="emotion"] {
+  grid-template-columns: repeat(3, 1fr);
+}
+.drawing-pair-canvases[data-cols="one"] {
+  grid-template-columns: 1fr;
+}
+
+.gallery-empty {
+  text-align: center;
+  padding: 6rem 2rem;
+  font-family: var(--font-manrope);
+  color: var(--text-muted);
+}
+.gallery-empty p {
+  margin-bottom: 1rem;
+}
+
+.gallery-cycle {
+  margin: 3rem auto 0;
+  max-width: 72rem;
+  padding: 0 2rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem 2rem;
+  margin: 3rem auto 0;
+  padding: 0 2rem;
+  max-width: 84rem;
+}
+
+/* Drawing pair (used in both views) */
+.drawing-pair {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.drawing-pair-canvases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.drawing-pair-half {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+}
+
+.drawing-pair-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.drawing-pair-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.drawing-pair-label {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.7rem;
+  font-family: var(--font-etbook);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 248, 0.45);
+  letter-spacing: -0.01em;
+  pointer-events: none;
+}
+
+.drawing-pair-caption {
+  font-family: var(--font-manrope);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .draw-page {
+    padding: 6rem 1.25rem 2rem;
+  }
+  .draw-canvas-frame {
+    aspect-ratio: 3 / 4;
+  }
+  .gallery-grid,
+  .gallery-grid[data-filter="data"],
+  .gallery-grid[data-filter="emotion"] {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .gallery-cycle,
+  .gallery-onion {
+    padding: 0 1.25rem;
+  }
+  .drawing-pair-canvases {
+    grid-template-columns: 1fr;
+  }
+}
+
