@@ -920,6 +920,9 @@ a {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  /* Use small-viewport units so iOS Safari's address bar doesn't push the
+     canvas below the fold. */
+  min-height: 100svh;
 }
 
 .draw-prompt {
@@ -957,6 +960,9 @@ a {
   position: relative;
   width: min(100%, 56rem);
   aspect-ratio: 4 / 3;
+  /* Cap height to whatever's left under the nav + prompt + bottom padding.
+     Prevents portrait iPad from rendering a canvas taller than the viewport. */
+  max-height: calc(100svh - 18rem);
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border);
@@ -1373,7 +1379,14 @@ a {
     padding: 6rem 1.25rem 2rem;
   }
   .draw-canvas-frame {
-    aspect-ratio: 3 / 4;
+    /* Portrait orientations: cap by EITHER 100% width OR available
+       viewport height, whichever produces a smaller canvas, while
+       preserving the 4:5 aspect ratio. */
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    max-width: calc((100svh - 14rem) * 4 / 5);
+    max-height: calc(100svh - 14rem);
+    height: auto;
   }
   /* Keep data/emotion side-by-side inside a card on tablet/phone too. */
   .drawing-pair-canvases {
