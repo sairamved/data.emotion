@@ -1375,17 +1375,27 @@ a {
   .draw-canvas-frame {
     aspect-ratio: 3 / 4;
   }
-  .gallery-grid,
+  /* Keep data/emotion side-by-side inside a card on tablet/phone too. */
+  .drawing-pair-canvases {
+    gap: 0.5rem;
+  }
+  .gallery-grid {
+    gap: 2rem 1rem;
+  }
+  /* When filter is data-only or emotion-only, drop to 2 cols on tablet,
+     1 col on phone. */
   .gallery-grid[data-filter="data"],
   .gallery-grid[data-filter="emotion"] {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
+    grid-template-columns: repeat(2, 1fr);
   }
-  .gallery-cycle,
-  .gallery-onion {
+  .gallery-cycle {
     padding: 0 1.25rem;
   }
-  .drawing-pair-canvases {
+}
+
+@media (max-width: 560px) {
+  .gallery-grid[data-filter="data"],
+  .gallery-grid[data-filter="emotion"] {
     grid-template-columns: 1fr;
   }
 }

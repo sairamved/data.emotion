@@ -15,8 +15,9 @@ import type { Drawing } from "@/lib/drawings/types";
 type View = "cycle" | "grid";
 type GridFilter = "both" | "data" | "emotion";
 
-const CYCLE_INTERVAL_MS = 3500;
-const REPLAY_DURATION_MS = 1200;
+const REPLAY_DURATION_MS = 1400;
+/** Total time each drawing is on screen in cycle view: replay + breathing room. */
+const CYCLE_INTERVAL_MS = REPLAY_DURATION_MS + 1100;
 
 function formatDuration(ms: number): string {
   const s = Math.round(ms / 1000);
@@ -67,11 +68,15 @@ export default function GalleryPage() {
     };
   }, []);
 
-  // Realtime subscription with content-hash dedupe.
+  // Realtime subscription. Dedupe by both Supabase id (authoritative) AND
+  // content fingerprint (catches retried-but-already-synced drawings).
   useEffect(() => {
     const unsub = subscribeToNewDrawings((d) => {
       const fp = drawingFingerprint(d);
-      if (fingerprintsRef.current.has(fp)) return;
+      const idMatch =
+        d.id &&
+        drawingsRef.current.some((existing) => existing.id === d.id);
+      if (idMatch || fingerprintsRef.current.has(fp)) return;
       fingerprintsRef.current.add(fp);
       drawingsRef.current = [d, ...drawingsRef.current];
       setDrawings([...drawingsRef.current]);
@@ -104,13 +109,6 @@ export default function GalleryPage() {
       <article className="conversation gallery-article">
         <header className="conversation-header gallery-header">
           <h1 className="conversation-title">Drawing Archive</h1>
-          <div className="conversation-meta">
-            <span>How people feel about</span>
-            <span className="meta-sep">·</span>
-            <em>data</em>
-            <span className="meta-sep">·</span>
-            <em>emotion</em>
-          </div>
 
           <div className="gallery-toggle">
             <button
@@ -197,6 +195,7 @@ export default function GalleryPage() {
               drawing={current}
               replayKey={`${current.id ?? cycleIndex}-${cycleIndex}`}
               animate
+              loop={false}
               filter="both"
             />
           </div>
@@ -210,6 +209,7 @@ export default function GalleryPage() {
                 drawing={d}
                 replayKey={d.id ?? i}
                 animate={false}
+                loop={false}
                 filter={gridFilter}
               />
             ))}
@@ -225,7 +225,10 @@ export default function GalleryPage() {
 interface DrawingPairProps {
   drawing: Drawing;
   replayKey: string | number;
+  /** Animate the draw-on. */
   animate: boolean;
+  /** Loop the replay (re-draw on every cycle). */
+  loop: boolean;
   filter: GridFilter;
 }
 
@@ -233,10 +236,9 @@ function DrawingPair({
   drawing,
   replayKey,
   animate,
+  loop,
   filter,
 }: DrawingPairProps) {
-  const totalStrokes =
-    drawing.data.strokes.length + drawing.emotion.strokes.length;
   const totalTime = drawing.data.durationMs + drawing.emotion.durationMs;
 
   const showData = filter === "both" || filter === "data";
@@ -253,7 +255,7 @@ function DrawingPair({
             <ReplayCanvas
               strokes={drawing.data.strokes}
               durationMs={REPLAY_DURATION_MS}
-              loop={animate}
+              loop={loop}
               static={!animate}
               replayKey={`data-${replayKey}`}
               className="drawing-pair-canvas"
@@ -266,7 +268,7 @@ function DrawingPair({
             <ReplayCanvas
               strokes={drawing.emotion.strokes}
               durationMs={REPLAY_DURATION_MS}
-              loop={animate}
+              loop={loop}
               static={!animate}
               replayKey={`emotion-${replayKey}`}
               className="drawing-pair-canvas"
@@ -277,10 +279,6 @@ function DrawingPair({
       </div>
       <figcaption className="drawing-pair-caption">
         <span>{formatTimestamp(drawing.createdAt)}</span>
-        <span className="meta-sep">·</span>
-        <span>
-          {totalStrokes} stroke{totalStrokes === 1 ? "" : "s"}
-        </span>
         <span className="meta-sep">·</span>
         <span>{formatDuration(totalTime)}</span>
       </figcaption>
