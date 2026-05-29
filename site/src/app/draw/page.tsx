@@ -214,7 +214,7 @@ export default function DrawPage() {
           <div className="draw-thanks">
             <p className="draw-thanks-eyebrow">Saved</p>
             <h2 className="draw-thanks-title">
-              The marks you made are entering an archive of how people feel about{" "}
+              Your drawings are entering an archive of how people feel about{" "}
               <em>data</em> and <em>emotion</em>.
             </h2>
             <p className="draw-thanks-body">
