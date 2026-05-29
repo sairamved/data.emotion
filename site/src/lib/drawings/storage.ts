@@ -10,8 +10,13 @@
  *   4. If Supabase fails, leave it queued; a background retry loop drains the queue
  */
 
-import type { Drawing, DrawingRow } from "./types";
-import { drawingToRow, rowToDrawing } from "./types";
+import type {
+  Drawing,
+  DrawingMeta,
+  DrawingMetaRow,
+  DrawingRow,
+} from "./types";
+import { drawingToRow, rowToDrawing, rowToMeta } from "./types";
 import { getSupabase } from "./supabase";
 
 const DB_NAME = "data-emotion-drawings";
@@ -233,6 +238,89 @@ export async function fetchAllDrawings(): Promise<Drawing[]> {
     );
   } catch {
     return [];
+  }
+}
+
+const META_COLUMNS =
+  "id,created_at,data_stroke_count,emotion_stroke_count,data_duration_ms,emotion_duration_ms";
+
+/**
+ * Fetch only metadata (id, timestamp, counts, durations) for all drawings,
+ * newest first. The stroke arrays are NOT fetched — call `fetchDrawingById`
+ * to load the full drawing when you actually need to render it. This keeps
+ * the gallery initial load tiny even when the archive has hundreds of
+ * drawings with thousands of stroke points each.
+ *
+ * Falls back to local-only if Supabase is missing.
+ */
+export async function fetchDrawingMetas(): Promise<DrawingMeta[]> {
+  const supabase = getSupabase();
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from("drawings")
+        .select(META_COLUMNS)
+        .order("created_at", { ascending: false });
+      if (!error && data) {
+        return (data as unknown as DrawingMetaRow[]).map(rowToMeta);
+      }
+    } catch {
+      // fall through to local
+    }
+  }
+
+  // Local fallback: derive metas from whatever's in IndexedDB.
+  try {
+    const all = await withStore<QueueRow[]>("readonly", (s) =>
+      reqToPromise(s.getAll() as IDBRequest<QueueRow[]>),
+    );
+    return all
+      .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+      .map((r) => ({
+        id: r.syncedRemoteId ?? r.localId,
+        createdAt: r.createdAt,
+        dataStrokeCount: r.drawing.data.strokes.length,
+        emotionStrokeCount: r.drawing.emotion.strokes.length,
+        dataDurationMs: Math.round(r.drawing.data.durationMs),
+        emotionDurationMs: Math.round(r.drawing.emotion.durationMs),
+      }));
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Fetch the full Drawing (including stroke arrays) for a single id.
+ * Used lazily by the gallery when a specific drawing is about to be shown.
+ */
+export async function fetchDrawingById(id: string): Promise<Drawing | null> {
+  const supabase = getSupabase();
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from("drawings")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+      if (!error && data) {
+        return rowToDrawing(data as DrawingRow);
+      }
+    } catch {
+      // fall through to local
+    }
+  }
+
+  // Local fallback.
+  try {
+    const all = await withStore<QueueRow[]>("readonly", (s) =>
+      reqToPromise(s.getAll() as IDBRequest<QueueRow[]>),
+    );
+    const match = all.find(
+      (r) => r.syncedRemoteId === id || r.localId === id,
+    );
+    return match ? match.drawing : null;
+  } catch {
+    return null;
   }
 }
 

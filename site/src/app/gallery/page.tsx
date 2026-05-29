@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { ReplayCanvas } from "@/components/draw/ReplayCanvas";
 import { playTap, preloadTaps } from "@/lib/sounds";
 import {
-  fetchAllDrawings,
+  fetchDrawingMetas,
+  fetchDrawingById,
   subscribeToNewDrawings,
   drawingFingerprint,
 } from "@/lib/drawings/storage";
-import type { Drawing } from "@/lib/drawings/types";
+import type { Drawing, DrawingMeta } from "@/lib/drawings/types";
 
 type View = "cycle" | "grid";
 type GridFilter = "both" | "data" | "emotion";
@@ -43,64 +44,144 @@ function formatTimestamp(iso?: string): string {
 }
 
 export default function GalleryPage() {
-  const [drawings, setDrawings] = useState<Drawing[]>([]);
+  // Lightweight index — drives the cycle / grid layout, fetched up front.
+  const [metas, setMetas] = useState<DrawingMeta[]>([]);
+
+  // In-memory cache of fully-loaded drawings (with stroke arrays).
+  const cacheRef = useRef<Map<string, Drawing>>(new Map());
+  // Force re-render when the cache fills in.
+  const [cacheVersion, setCacheVersion] = useState(0);
+  const bumpCache = useCallback(() => setCacheVersion((v) => v + 1), []);
+
   const [view, setView] = useState<View>("cycle");
   const [gridFilter, setGridFilter] = useState<GridFilter>("both");
   const [cycleIndex, setCycleIndex] = useState(0);
-  const drawingsRef = useRef<Drawing[]>([]);
+
+  const metasRef = useRef<DrawingMeta[]>([]);
   const fingerprintsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     preloadTaps();
   }, []);
 
-  // Initial fetch.
+  // Initial fetch — metadata only.
   useEffect(() => {
     let cancelled = false;
-    fetchAllDrawings().then((d) => {
+    fetchDrawingMetas().then((m) => {
       if (cancelled) return;
-      drawingsRef.current = d;
-      fingerprintsRef.current = new Set(d.map(drawingFingerprint));
-      setDrawings(d);
+      metasRef.current = m;
+      setMetas(m);
     });
     return () => {
       cancelled = true;
     };
   }, []);
 
-  // Realtime subscription. Dedupe by both Supabase id (authoritative) AND
-  // content fingerprint (catches retried-but-already-synced drawings).
+  // Realtime subscription. New inserts arrive as full Drawing objects;
+  // dedupe by Supabase id + content fingerprint, then add to both the
+  // meta list (top, newest-first) AND the cache.
   useEffect(() => {
     const unsub = subscribeToNewDrawings((d) => {
+      if (!d.id) return;
       const fp = drawingFingerprint(d);
-      const idMatch =
-        d.id &&
-        drawingsRef.current.some((existing) => existing.id === d.id);
+      const idMatch = metasRef.current.some((m) => m.id === d.id);
       if (idMatch || fingerprintsRef.current.has(fp)) return;
       fingerprintsRef.current.add(fp);
-      drawingsRef.current = [d, ...drawingsRef.current];
-      setDrawings([...drawingsRef.current]);
+
+      cacheRef.current.set(d.id, d);
+      const newMeta: DrawingMeta = {
+        id: d.id,
+        createdAt: d.createdAt ?? new Date().toISOString(),
+        dataStrokeCount: d.data.strokes.length,
+        emotionStrokeCount: d.emotion.strokes.length,
+        dataDurationMs: Math.round(d.data.durationMs),
+        emotionDurationMs: Math.round(d.emotion.durationMs),
+      };
+      metasRef.current = [newMeta, ...metasRef.current];
+      setMetas([...metasRef.current]);
+      bumpCache();
     });
     return unsub;
-  }, []);
+  }, [bumpCache]);
 
-  // Auto-advance cycle.
+  // Seed the fingerprint set from initial metas (so realtime can dedupe
+  // by id even before we've loaded the full Drawing).
   useEffect(() => {
-    if (view !== "cycle" || drawings.length === 0) return;
+    // Fingerprint requires full strokes; we don't have those for metas.
+    // But dedupe-by-id still catches the common "realtime replays an
+    // already-fetched row" case. We rely on fingerprint as a backstop
+    // when a full Drawing later lands.
+  }, [metas]);
+
+  /**
+   * Load a drawing into the cache. Idempotent — if it's already there,
+   * resolves immediately.
+   */
+  const loadDrawing = useCallback(
+    async (id: string) => {
+      if (cacheRef.current.has(id)) return;
+      const d = await fetchDrawingById(id);
+      if (d && d.id) {
+        cacheRef.current.set(d.id, d);
+        bumpCache();
+      }
+    },
+    [bumpCache],
+  );
+
+  // Cycle view: maintain a sliding prefetch window of the current
+  // drawing plus the next few, so cycling is seamless even on slow wifi.
+  useEffect(() => {
+    if (view !== "cycle" || metas.length === 0) return;
+    const PREFETCH_AHEAD = 3;
+    const ids = new Set<string>();
+    for (let i = 0; i <= PREFETCH_AHEAD; i++) {
+      const m = metas[(cycleIndex + i) % metas.length];
+      if (m) ids.add(m.id);
+    }
+    for (const id of ids) loadDrawing(id);
+  }, [view, cycleIndex, metas, loadDrawing]);
+
+  // Cold start: as soon as metas land, kick off loads for the first few
+  // so the cycle has something ready immediately on first paint.
+  useEffect(() => {
+    if (metas.length === 0) return;
+    const PREFETCH_INITIAL = 3;
+    for (let i = 0; i < Math.min(PREFETCH_INITIAL, metas.length); i++) {
+      loadDrawing(metas[i].id);
+    }
+  }, [metas, loadDrawing]);
+
+  // Auto-advance cycle. If the next-up drawing's strokes haven't loaded
+  // yet, hold on the current one for an extra cycle rather than showing
+  // an empty placeholder.
+  useEffect(() => {
+    if (view !== "cycle" || metas.length === 0) return;
     const id = window.setInterval(() => {
-      setCycleIndex((i) => (i + 1) % Math.max(drawings.length, 1));
+      setCycleIndex((i) => {
+        const next = (i + 1) % metas.length;
+        const nextMeta = metas[next];
+        if (nextMeta && !cacheRef.current.has(nextMeta.id)) {
+          // Not ready — stay on the current drawing for now.
+          return i;
+        }
+        return next;
+      });
     }, CYCLE_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [view, drawings.length]);
+  }, [view, metas]);
 
-  // Keep cycleIndex in range when drawings list shrinks.
+  // Keep cycleIndex in range.
   useEffect(() => {
-    if (cycleIndex >= drawings.length && drawings.length > 0) {
+    if (cycleIndex >= metas.length && metas.length > 0) {
       setCycleIndex(0);
     }
-  }, [cycleIndex, drawings.length]);
+  }, [cycleIndex, metas.length]);
 
-  const current = drawings[cycleIndex];
+  const currentMeta = metas[cycleIndex];
+  const currentDrawing = currentMeta
+    ? cacheRef.current.get(currentMeta.id)
+    : undefined;
 
   return (
     <div style={{ background: "#000000", minHeight: "100vh" }}>
@@ -142,7 +223,7 @@ export default function GalleryPage() {
             </Link>
           </div>
 
-          {view === "grid" && drawings.length > 0 && (
+          {view === "grid" && metas.length > 0 && (
             <div className="gallery-subfilter-row">
               <div className="gallery-subfilter">
                 <button
@@ -180,7 +261,7 @@ export default function GalleryPage() {
           )}
         </header>
 
-        {drawings.length === 0 && (
+        {metas.length === 0 && (
           <div className="gallery-empty">
             <p>No drawings yet.</p>
             <Link href="/draw" className="meta-link" onClick={() => playTap()}>
@@ -189,28 +270,32 @@ export default function GalleryPage() {
           </div>
         )}
 
-        {view === "cycle" && current && (
+        {view === "cycle" && currentMeta && (
           <div className="gallery-cycle">
-            <DrawingPair
-              drawing={current}
-              replayKey={`${current.id ?? cycleIndex}-${cycleIndex}`}
-              animate
-              loop={false}
-              filter="both"
-            />
+            {currentDrawing ? (
+              <DrawingPair
+                drawing={currentDrawing}
+                replayKey={`${currentDrawing.id}-${cycleIndex}`}
+                animate
+                loop={false}
+                filter="both"
+              />
+            ) : (
+              <DrawingPairPlaceholder meta={currentMeta} />
+            )}
           </div>
         )}
 
-        {view === "grid" && drawings.length > 0 && (
+        {view === "grid" && metas.length > 0 && (
           <div className="gallery-grid" data-filter={gridFilter}>
-            {drawings.map((d, i) => (
-              <DrawingPair
-                key={d.id ?? `${i}-${d.createdAt ?? i}`}
-                drawing={d}
-                replayKey={d.id ?? i}
-                animate={false}
-                loop={false}
+            {metas.map((m) => (
+              <LazyDrawingCard
+                key={m.id}
+                meta={m}
                 filter={gridFilter}
+                drawing={cacheRef.current.get(m.id)}
+                onVisible={() => loadDrawing(m.id)}
+                cacheVersion={cacheVersion}
               />
             ))}
           </div>
@@ -218,6 +303,66 @@ export default function GalleryPage() {
 
         <div style={{ paddingBottom: "8rem" }} />
       </article>
+    </div>
+  );
+}
+
+/**
+ * Grid card that defers loading the actual stroke data until the card
+ * is about to scroll into view. Renders a placeholder until then.
+ */
+interface LazyDrawingCardProps {
+  meta: DrawingMeta;
+  filter: GridFilter;
+  drawing?: Drawing;
+  onVisible: () => void;
+  cacheVersion: number;
+}
+
+function LazyDrawingCard({
+  meta,
+  filter,
+  drawing,
+  onVisible,
+}: LazyDrawingCardProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const triggeredRef = useRef(false);
+
+  useEffect(() => {
+    if (drawing) return; // already loaded
+    if (triggeredRef.current) return;
+    const el = wrapperRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            triggeredRef.current = true;
+            onVisible();
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "400px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [drawing, onVisible]);
+
+  return (
+    <div ref={wrapperRef}>
+      {drawing ? (
+        <DrawingPair
+          drawing={drawing}
+          replayKey={drawing.id ?? meta.id}
+          animate={false}
+          loop={false}
+          filter={filter}
+        />
+      ) : (
+        <DrawingPairPlaceholder meta={meta} filter={filter} />
+      )}
     </div>
   );
 }
@@ -286,3 +431,40 @@ function DrawingPair({
   );
 }
 
+/** Empty-shaped placeholder used while a drawing's strokes are loading. */
+function DrawingPairPlaceholder({
+  meta,
+  filter = "both",
+}: {
+  meta: DrawingMeta;
+  filter?: GridFilter;
+}) {
+  const showData = filter === "both" || filter === "data";
+  const showEmotion = filter === "both" || filter === "emotion";
+  const totalTime = meta.dataDurationMs + meta.emotionDurationMs;
+
+  return (
+    <figure className="drawing-pair">
+      <div
+        className="drawing-pair-canvases"
+        data-cols={showData && showEmotion ? "two" : "one"}
+      >
+        {showData && (
+          <div className="drawing-pair-half drawing-pair-placeholder">
+            <span className="drawing-pair-label">data</span>
+          </div>
+        )}
+        {showEmotion && (
+          <div className="drawing-pair-half drawing-pair-placeholder">
+            <span className="drawing-pair-label">emotion</span>
+          </div>
+        )}
+      </div>
+      <figcaption className="drawing-pair-caption">
+        <span>{formatTimestamp(meta.createdAt)}</span>
+        <span className="meta-sep">·</span>
+        <span>{formatDuration(totalTime)}</span>
+      </figcaption>
+    </figure>
+  );
+}

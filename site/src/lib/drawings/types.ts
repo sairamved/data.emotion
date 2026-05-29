@@ -40,6 +40,39 @@ export interface DrawingRow {
   created_at: string;
 }
 
+/**
+ * Lightweight metadata for a drawing — used for the gallery index so
+ * we don't have to pull every stroke array up front (huge payloads).
+ */
+export interface DrawingMeta {
+  id: string;
+  createdAt: string;
+  dataStrokeCount: number;
+  emotionStrokeCount: number;
+  dataDurationMs: number;
+  emotionDurationMs: number;
+}
+
+export interface DrawingMetaRow {
+  id: string;
+  created_at: string;
+  data_stroke_count: number;
+  emotion_stroke_count: number;
+  data_duration_ms: number;
+  emotion_duration_ms: number;
+}
+
+export function rowToMeta(r: DrawingMetaRow): DrawingMeta {
+  return {
+    id: r.id,
+    createdAt: r.created_at,
+    dataStrokeCount: r.data_stroke_count,
+    emotionStrokeCount: r.emotion_stroke_count,
+    dataDurationMs: r.data_duration_ms,
+    emotionDurationMs: r.emotion_duration_ms,
+  };
+}
+
 export function rowToDrawing(r: DrawingRow): Drawing {
   return {
     id: r.id,

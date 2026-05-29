@@ -1338,6 +1338,15 @@ a {
   background: #000;
 }
 
+/* Empty placeholder while a drawing's strokes are streaming in. */
+.drawing-pair-placeholder {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 248, 0.025) 0%,
+    rgba(255, 255, 248, 0.015) 100%
+  );
+}
+
 .drawing-pair-canvas {
   width: 100%;
   height: 100%;
