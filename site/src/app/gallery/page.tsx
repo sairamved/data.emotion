@@ -162,7 +162,6 @@ export default function GalleryPage() {
         const next = (i + 1) % metas.length;
         const nextMeta = metas[next];
         if (nextMeta && !cacheRef.current.has(nextMeta.id)) {
-          // Not ready — stay on the current drawing for now.
           return i;
         }
         return next;

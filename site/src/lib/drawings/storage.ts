@@ -209,6 +209,41 @@ export function dedupeDrawings(drawings: Drawing[]): Drawing[] {
   return out;
 }
 
+/**
+ * Lightweight fingerprint for the metadata-only list. Catches duplicate
+ * rows that have the same drawing content (stroke counts + durations)
+ * submitted within a 10-second window. This handles the common case of
+ * the offline retry queue inserting the same drawing twice.
+ *
+ * NOTE: not as precise as the full fingerprint (since we don't have the
+ * stroke point data), but good enough at the metadata layer.
+ */
+export function metaFingerprint(m: DrawingMeta): string {
+  // Quantize createdAt to 10-second buckets — duplicate inserts almost
+  // always land within seconds of each other.
+  const tenSecBucket = Math.floor(new Date(m.createdAt).getTime() / 10000);
+  return [
+    m.dataStrokeCount,
+    m.emotionStrokeCount,
+    m.dataDurationMs,
+    m.emotionDurationMs,
+    tenSecBucket,
+  ].join("|");
+}
+
+/** Dedupe a metadata list using metaFingerprint. */
+export function dedupeMetas(metas: DrawingMeta[]): DrawingMeta[] {
+  const seen = new Set<string>();
+  const out: DrawingMeta[] = [];
+  for (const m of metas) {
+    const fp = metaFingerprint(m);
+    if (seen.has(fp)) continue;
+    seen.add(fp);
+    out.push(m);
+  }
+  return out;
+}
+
 /** Fetch all drawings, newest first. Falls back to local-only if Supabase is missing. */
 export async function fetchAllDrawings(): Promise<Drawing[]> {
   const supabase = getSupabase();
@@ -262,7 +297,9 @@ export async function fetchDrawingMetas(): Promise<DrawingMeta[]> {
         .select(META_COLUMNS)
         .order("created_at", { ascending: false });
       if (!error && data) {
-        return (data as unknown as DrawingMetaRow[]).map(rowToMeta);
+        return dedupeMetas(
+          (data as unknown as DrawingMetaRow[]).map(rowToMeta),
+        );
       }
     } catch {
       // fall through to local
@@ -274,16 +311,18 @@ export async function fetchDrawingMetas(): Promise<DrawingMeta[]> {
     const all = await withStore<QueueRow[]>("readonly", (s) =>
       reqToPromise(s.getAll() as IDBRequest<QueueRow[]>),
     );
-    return all
-      .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
-      .map((r) => ({
-        id: r.syncedRemoteId ?? r.localId,
-        createdAt: r.createdAt,
-        dataStrokeCount: r.drawing.data.strokes.length,
-        emotionStrokeCount: r.drawing.emotion.strokes.length,
-        dataDurationMs: Math.round(r.drawing.data.durationMs),
-        emotionDurationMs: Math.round(r.drawing.emotion.durationMs),
-      }));
+    return dedupeMetas(
+      all
+        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+        .map((r) => ({
+          id: r.syncedRemoteId ?? r.localId,
+          createdAt: r.createdAt,
+          dataStrokeCount: r.drawing.data.strokes.length,
+          emotionStrokeCount: r.drawing.emotion.strokes.length,
+          dataDurationMs: Math.round(r.drawing.data.durationMs),
+          emotionDurationMs: Math.round(r.drawing.emotion.durationMs),
+        })),
+    );
   } catch {
     return [];
   }
